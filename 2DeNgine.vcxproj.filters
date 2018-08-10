@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\math\vec4.h">
+    <ClInclude Include="src\math\linearmath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
