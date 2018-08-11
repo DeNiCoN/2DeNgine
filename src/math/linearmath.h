@@ -7,6 +7,10 @@
 
 #define S_INLINE static inline
 
+typedef struct {
+	vec4 value[4];
+}  mat44;
+
 typedef __declspec(align(8)) union
 {
 	struct {
@@ -54,6 +58,21 @@ typedef __declspec(align(16)) union
 
 }  vec4;
 
+S_INLINE vec2 vec2_(float x, float y) {
+	vec2 c = { x, y };
+	return c;
+}
+
+S_INLINE vec3 vec3_(float x, float y, float z) {
+	vec3 c = { x, y , z};
+	return c;
+}
+
+S_INLINE vec4 vec4_(float x, float y, float z, float w) {
+	vec4 c;
+	c.ssevalue = _mm_set_ps(x, y, z, w);
+	return c;
+}
 
 S_INLINE vec2 vec2_add(vec2 a, vec2 b)
 {
@@ -292,4 +311,35 @@ S_INLINE vec4 vec4_normalize(vec4 a)
 	return vec4_decreace(a, vec4_length(a));
 }
 
+S_INLINE mat44 mat44_identity(float diagonal) 
+{
+	mat44 c;
+	c.value[0].ssevalue = _mm_set(diagonal, 0, 0, 0);
+	c.value[1].ssevalue = _mm_set(0, diagonal, 0, 0);
+	c.value[2].ssevalue = _mm_set(0, 0, diagonal, 0);
+	c.value[3].ssevalue = _mm_set(0, 0, 0, diagonal);
+	return c;
+}
 
+S_INLINE mat44 mat44_transpose(mat44 a)
+{
+	_MM_TRANSPOSE4_PS(a.value[0], a.value[1], a.value[2], a.value[3]);
+	return a;
+}
+
+S_INLINE mat44 mat44_scale_uniform(float scalar) 
+{
+	mat44 c;
+	c.value[0].ssevalue = _mm_set(scalar, 0, 0, 0);
+	c.value[1].ssevalue = _mm_set(0, scalar, 0, 0);
+	c.value[2].ssevalue = _mm_set(0, 0, scalar, 0);
+	c.value[3].ssevalue = _mm_set(0, 0, 0, 1);
+	return c;
+}
+
+S_INLINE mat44 mat44_translate(vec3 a)
+{
+	mat44 c = mat44_identity(1.0f);
+	c.value[3].xyz = a;
+	return c;
+}
