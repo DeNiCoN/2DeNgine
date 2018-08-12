@@ -7,6 +7,9 @@
 
 #define S_INLINE static inline
 
+#define SHUFFLE_PARAM(x, y, z, w) \
+((x) | ((y) << 2) | ((z) << 4) | ((w) << 6))
+
 typedef struct {
 	vec4 value[4];
 }  mat44;
@@ -341,5 +344,63 @@ S_INLINE mat44 mat44_translate(vec3 a)
 {
 	mat44 c = mat44_identity(1.0f);
 	c.value[3].xyz = a;
+	return c;
+}
+
+S_INLINE mat44 mat44_rotate_by_x(float radians) 
+{
+	mat44 c = mat44_identity(1.0f);
+	c.value[1].value[1] = cosf(radians);
+	c.value[2].value[2] = cosf(radians);
+	c.value[1].value[2] = -sinf(radians);
+	c.value[2].value[1] = sinf(radians);
+	return c;
+}
+
+S_INLINE mat44 mat44_rotate_by_y(float radians) 
+{
+	mat44 c = mat44_identity(1.0f);
+	c.value[0].value[0] = cosf(radians);
+	c.value[2].value[2] = cosf(radians);
+	c.value[0].value[2] = sinf(radians);
+	c.value[2].value[0] = -sinf(radians);
+	return c;
+}
+
+S_INLINE mat44 mat44_rotate_by_x(float radians) 
+{
+	mat44 c = mat44_identity(1.0f);
+	c.value[0].value[0] = cosf(radians);
+	c.value[1].value[1] = cosf(radians);
+	c.value[0].value[1] = -sinf(radians);
+	c.value[1].value[0] = sinf(radians);
+	return c;
+}
+
+S_INLINE mat44 mat44_add(mat44 a, mat44 b)
+{
+	mat44 c;
+	c.value[0].ssevalue = _mm_add_ps(a.value[0].ssevalue, b.value[0].ssevalue);
+	c.value[1].ssevalue = _mm_add_ps(a.value[1].ssevalue, b.value[1].ssevalue);
+	c.value[2].ssevalue = _mm_add_ps(a.value[2].ssevalue, b.value[2].ssevalue);
+	c.value[3].ssevalue = _mm_add_ps(a.value[3].ssevalue, b.value[3].ssevalue);
+}
+
+S_INLINE mat44 mat44_multiply(mat44 a, mat44 b)
+{
+	mat44 c;
+	c.value[0].ssevalue = sse_vec_mat44_multiply(a.value[0].ssevalue, b);
+	c.value[1].ssevalue = sse_vec_mat44_multiply(a.value[1].ssevalue, b);
+	c.value[2].ssevalue = sse_vec_mat44_multiply(a.value[2].ssevalue, b);
+	c.value[3].ssevalue = sse_vec_mat44_multiply(a.value[3].ssevalue, b);
+	return c;
+}
+
+S_INLINE __m128 sse_vec_mat44_multiply(__m128 a, mat44 b) 
+{
+	__m128 c = _mm_mul_ps(_mm_shuffle_ps(a, a, SHUFFLE_PARAM(0, 0, 0, 0)), b.value[0]);
+	c = _mm_add_ps(c, _mm_mul_ps(_mm_shuffle_ps(a, a, SHUFFLE_PARAM(1, 1, 1, 1)), b.value[1]));
+	c = _mm_add_ps(c, _mm_mul_ps(_mm_shuffle_ps(a, a, SHUFFLE_PARAM(2, 2, 2, 2)), b.value[2]));
+	c = _mm_add_ps(c, _mm_mul_ps(_mm_shuffle_ps(a, a, SHUFFLE_PARAM(3, 3, 3, 3)), b.value[3]));
 	return c;
 }
