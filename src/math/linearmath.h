@@ -469,4 +469,46 @@ S_INLINE quat quat_conjugate(quat a)
 	return a;
 }
 
+S_INLINE quat quat_conjugate_sse(quat a)
+{
+	__m128 tmp = _mm_set_ps(-1, -1, -1, 1);
+	a.ssevalue = _mm_mul_ps(a.ssevalue, tmp);
+	return a;
+}
+
+S_INLINE quat quat_multiply(quat a, quat b) 
+{
+	quat c;
+
+	__m128 wzyx = _mm_shuffle_ps(a.ssevalue, a.ssevalue, _MM_SHUFFLE(0, 1, 2, 3));
+	__m128 baba = _mm_shuffle_ps(b.ssevalue, b.ssevalue, _MM_SHUFFLE(0, 1, 0, 1));
+	__m128 dcdc = _mm_shuffle_ps(b.ssevalue, b.ssevalue, _MM_SHUFFLE(2, 3, 2, 3));
+
+	__m128 ZnXWY = _mm_hsub_ps(_mm_mul_ps(a.ssevalue, baba), _mm_mul_ps(wzyx, dcdc));
+	__m128 XZYnW = _mm_hadd_ps(_mm_mul_ps(a.ssevalue, dcdc), _mm_mul_ps(wzyx, baba));
+	__m128 XZWY = _mm_addsub_ps(_mm_shuffle_ps(XZYnW, ZnXWY, _MM_SHUFFLE(3, 2, 1, 0)),_mm_shuffle_ps(ZnXWY, XZYnW, _MM_SHUFFLE(2, 3, 0, 1)));
+
+	c.ssevalue = _mm_shuffle_ps(XZWY, XZWY, _MM_SHUFFLE(2, 1, 3, 0));
+
+	return c;
+}
+
+S_INLINE vec3 quat_vec2_rotate(quat a, vec2 b) {
+	quat tmp = { b.x, b.y, 0, 0 };
+	tmp = quat_multiply(a, tmp);
+	quat conjugate = quat_conjugate_sse(a);
+	tmp = quat_multiply(tmp, conjugate);
+	vec3 c = { tmp.x, tmp.y, tmp.z };
+	return c;
+}
+
+S_INLINE vec3 quat_vec3_rotate(quat a, vec3 b) {
+	quat tmp = { b.x, b.y, b.z, 0 };
+	tmp = quat_multiply(a, tmp);
+	quat conjugate = quat_conjugate_sse(a);
+	tmp = quat_multiply(tmp, conjugate);
+	vec3 c = { tmp.x, tmp.y, tmp.z };
+	return c;
+}
+
 
