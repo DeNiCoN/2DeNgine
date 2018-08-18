@@ -76,7 +76,7 @@ S_INLINE vec3 vec3_(float x, float y, float z) {
 
 S_INLINE vec4 vec4_sse(float x, float y, float z, float w) {
 	vec4 c;
-	c.ssevalue = _mm_set_ps(x, y, z, w);
+	c.ssevalue = _mm_set_ps(w, z, y, x);
 	return c;
 }
 
@@ -276,15 +276,6 @@ S_INLINE vec3 vec3_cross(vec3 a, vec3 b)
 	return c;
 }
 
-S_INLINE __m128 sse_cross(__m128 a, __m128 b)
-{
-	__m128 a_yzx = _mm_shuffle_ps(a, a, _MM_SHUFFLE(3, 0, 2, 1));
-	__m128 b_yzx = _mm_shuffle_ps(b, b, _MM_SHUFFLE(3, 0, 2, 1));
-	__m128 c = _mm_sub_ps(_mm_mul_ps(a, b_yzx), _mm_mul_ps(a_yzx, b));
-	return _mm_shuffle_ps(c, c, _MM_SHUFFLE(3, 0, 2, 1));
-}
-
-
 S_INLINE vec2 vec2_scale(vec2 a, float scalar)
 {
 	vec2 c;
@@ -450,12 +441,16 @@ S_INLINE quat quat_from_vec3(vec3 a, float radians)
 	c.xyz = vec3_scale(a, sinf(tmp));
 	c.w = cosf(tmp);
 }
-S_INLINE quat quat_from_vec4(vec4 a, float radians)
+
+S_INLINE quat quat_from_vec4_v2(vec4 a, float radians)
 {
 	quat c;
 	float tmp = radians / 2;
-	c.xyz = vec4_scale(a, sinf(tmp)).xyz;
-	c.w = cosf(tmp);
+	float sin = sinf(tmp);
+	__m128 mul = _mm_set_ps(0, sin, sin, sin);
+	__m128 add = _mm_set_ps(cosf(tmp), 0, 0, 0);
+	c.ssevalue = _mm_add_ps(_mm_mul_ps(a.ssevalue, mul), add);
+	return c;
 }
 
 S_INLINE quat quat_normalize(quat a) 
@@ -471,7 +466,7 @@ S_INLINE quat quat_conjugate(quat a)
 
 S_INLINE quat quat_conjugate_sse(quat a)
 {
-	__m128 tmp = _mm_set_ps(-1, -1, -1, 1);
+	__m128 tmp = _mm_set_ps(1, -1, -1, -1);
 	a.ssevalue = _mm_mul_ps(a.ssevalue, tmp);
 	return a;
 }
@@ -494,7 +489,8 @@ S_INLINE quat quat_multiply(quat a, quat b)
 }
 
 S_INLINE vec3 quat_vec2_rotate(quat a, vec2 b) {
-	quat tmp = { b.x, b.y, 0, 0 };
+	quat tmp;
+	tmp.ssevalue = _mm_set_ps(0, 0, b.y, b.x);
 	tmp = quat_multiply(a, tmp);
 	quat conjugate = quat_conjugate_sse(a);
 	tmp = quat_multiply(tmp, conjugate);
@@ -503,7 +499,8 @@ S_INLINE vec3 quat_vec2_rotate(quat a, vec2 b) {
 }
 
 S_INLINE vec3 quat_vec3_rotate(quat a, vec3 b) {
-	quat tmp = { b.x, b.y, b.z, 0 };
+	quat tmp;
+	tmp.ssevalue = _mm_set_ps(0, b.z, b.x, b.y);
 	tmp = quat_multiply(a, tmp);
 	quat conjugate = quat_conjugate_sse(a);
 	tmp = quat_multiply(tmp, conjugate);
