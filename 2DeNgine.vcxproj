@@ -148,6 +148,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\math\linearmath.h" />
+    <ClInclude Include="src\memory\linearAlloc.h" />
+    <ClInclude Include="src\memory\poolAlloc.h" />
+    <ClInclude Include="src\memory\stackAlloc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\memory\linearAlloc.c" />
+    <ClCompile Include="src\memory\poolAlloc.c" />
+    <ClCompile Include="src\memory\stackAlloc.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
