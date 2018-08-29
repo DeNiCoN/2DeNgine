@@ -27,6 +27,9 @@
     <ClInclude Include="src\memory\poolAlloc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\memory\memutils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\memory\linearAlloc.c">

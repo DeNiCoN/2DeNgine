@@ -7,7 +7,7 @@ typedef struct {
 	void* nextFreeBlock;
 } PoolAllocator;
 
-void* PoolAlloc(PoolAllocator alloc);
-void PoolFree(PoolAllocator alloc, void* pointer);
-void PoolInit(PoolAllocator alloc);
-void PoolReset(PoolAllocator alloc);
+void* PoolAlloc(PoolAllocator* alloc);
+void PoolFree(PoolAllocator* alloc, void* pointer);
+void PoolInit(PoolAllocator* alloc);
+void PoolReset(PoolAllocator* alloc);
