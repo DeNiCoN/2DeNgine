@@ -1,5 +1,6 @@
 #pragma once
 #include <ctype.h>
+#define MIN_POOL_OBJECT_SIZE_BYTES 8
 
 typedef struct {
 	char* buffer;
