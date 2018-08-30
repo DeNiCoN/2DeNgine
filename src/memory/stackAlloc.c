@@ -3,9 +3,11 @@
 #include <ctype.h>
 #define STACK_HEADER_SIZE_BYTES 4
 
-StackAllocator stackAllocInit(char* buffer, size_t size) {
-	StackAllocator c = { buffer, size, 0 };
-	return c;
+
+void stackAllocInit(StackAllocator* alloc, char* buffer, size_t size) {
+	alloc->buffer = buffer;
+	alloc->size = size;
+	alloc->stackPointer = 0;
 }
 
 void* stackAlloc(StackAllocator* alloc, size_t size) {

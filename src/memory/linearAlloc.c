@@ -25,7 +25,7 @@ void* linAlloc(LinearAllocator* alloc, size_t size) {
 	return alloc->buffer + prevOffset;
 }
 
-LinearAllocator linAllocInit(char* buffer, size_t bufSize) {
+void linAllocInit(LinearAllocator* alloc, char* buffer, size_t bufSize) {
 	LinearAllocator c = { buffer, bufSize, 0 };
 	return c;
 }

@@ -1,13 +1,14 @@
 #pragma once
+#include <ctype.h>
 
 typedef struct {
-	size_t objCount;
-	size_t objSize;
 	char* buffer;
+	unsigned int objCount;
+	size_t objSize;
 	void* nextFreeBlock;
 } PoolAllocator;
 
-void* PoolAlloc(PoolAllocator* alloc);
-void PoolFree(PoolAllocator* alloc, void* pointer);
-void PoolInit(PoolAllocator* alloc);
-void PoolReset(PoolAllocator* alloc);
+void PoolInit(PoolAllocator* alloc, char* buffer, size_t objSize, unsigned int objCount); //places pointer to next free block in every block
+void* PoolAlloc(PoolAllocator* alloc); //remove pointer to next free block, return free block
+void PoolFree(PoolAllocator* alloc, void* pointer); // place pointer into block, set next free block to this pointer
+void PoolReset(PoolAllocator* alloc); //works like init
