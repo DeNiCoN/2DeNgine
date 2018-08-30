@@ -1,8 +1,6 @@
 #pragma once
 #include <ctype.h>
 
-#define MAX_ALIGN = 128
-
 typedef struct {
 	char* buffer;
 	size_t size;
