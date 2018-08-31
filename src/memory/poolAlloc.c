@@ -21,12 +21,12 @@ void PoolInit(PoolAllocator* alloc, char* buffer, size_t objSize, unsigned int o
 
 void* PoolAlloc(PoolAllocator* alloc) {
 	void* ptr = alloc->nextFreeBlock;
-	alloc->nextFreeBlock = (void*) ((char*)ptr + alloc->objSize);
+	alloc->nextFreeBlock = (void*) (*(uintptr_t*)ptr);
 	return ptr;
 }
 
 void PoolFree(PoolAllocator* alloc, void* pointer) {
-	*((uintptr_t*) pointer) = ((char*)pointer + alloc->objSize);
+	*((uintptr_t*) pointer) = alloc->nextFreeBlock;
 	alloc->nextFreeBlock = pointer;
 }
 
