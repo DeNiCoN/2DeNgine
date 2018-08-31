@@ -37,5 +37,5 @@ void poolFree(PoolAllocator* alloc, void* pointer)
 
 void poolReset(PoolAllocator* alloc) 
 {
-	PoolInit(alloc, alloc->buffer, alloc->objSize, alloc->objCount);
+	poolInit(alloc, alloc->buffer, alloc->objSize, alloc->objCount);
 }

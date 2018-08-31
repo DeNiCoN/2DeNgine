@@ -3,7 +3,7 @@
 #include "memutils.h"
 #include <stdio.h>
 
-void* LinAllocAligned(LinearAllocator* alloc, size_t size, size_t align) 
+void* linAllocAligned(LinearAllocator* alloc, size_t size, size_t align) 
 {
 	if (align & (align - 1)) 
 	{
@@ -19,7 +19,7 @@ void* LinAllocAligned(LinearAllocator* alloc, size_t size, size_t align)
 	return (void*)(rawPtr & ~addBytes);
 }
 
-void* LinAlloc(LinearAllocator* alloc, size_t size) 
+void* linAlloc(LinearAllocator* alloc, size_t size) 
 {
 	size_t prevOffset = alloc->offset;
 	if (alloc->offset + size > alloc->size) 
@@ -30,18 +30,18 @@ void* LinAlloc(LinearAllocator* alloc, size_t size)
 	return alloc->buffer + prevOffset;
 }
 
-void LinAllocInit(LinearAllocator* alloc, char* buffer, size_t bufSize) 
+void linAllocInit(LinearAllocator* alloc, char* buffer, size_t bufSize) 
 {
 	LinearAllocator c = { buffer, bufSize, 0 };
 	return c;
 }
 
-void LinReset(LinearAllocator* alloc) 
+void linReset(LinearAllocator* alloc) 
 {
 	alloc->offset = 0;
 }
 
-void LinFree(LinearAllocator* alloc, void* pointer) 
+void linFree(LinearAllocator* alloc, void* pointer) 
 {
 
 }

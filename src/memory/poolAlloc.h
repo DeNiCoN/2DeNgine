@@ -9,7 +9,7 @@ typedef struct {
 	void* nextFreeBlock;
 } PoolAllocator;
 
-void PoolInit(PoolAllocator* alloc, char* buffer, size_t objSize, unsigned int objCount); //places pointer to next free block in every block
-void* PoolAlloc(PoolAllocator* alloc); //remove pointer to next free block, return free block
-void PoolFree(PoolAllocator* alloc, void* pointer); // place pointer into block, set next free block to this pointer
-void PoolReset(PoolAllocator* alloc); //works like init
+void poolInit(PoolAllocator* alloc, char* buffer, size_t objSize, unsigned int objCount); //places pointer to next free block in every block
+void* poolAlloc(PoolAllocator* alloc); //remove pointer to next free block, return free block
+void poolFree(PoolAllocator* alloc, void* pointer); // place pointer into block, set next free block to this pointer
+void poolReset(PoolAllocator* alloc); //works like init
