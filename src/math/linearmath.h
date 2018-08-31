@@ -64,35 +64,35 @@ typedef struct {
 	vec4 value[4];
 }  mat44;
 
-S_INLINE vec2 vec2_(float x, float y) {
+S_INLINE vec2 vec2Create(float x, float y) {
 	vec2 c = { x, y };
 	return c;
 }
 
-S_INLINE vec3 vec3_(float x, float y, float z) {
+S_INLINE vec3 vec3Create(float x, float y, float z) {
 	vec3 c = { x, y , z};
 	return c;
 }
 
-S_INLINE vec4 vec4_sse(float x, float y, float z, float w) {
+S_INLINE vec4 vec4CreateSse(float x, float y, float z, float w) {
 	vec4 c;
 	c.ssevalue = _mm_set_ps(w, z, y, x);
 	return c;
 }
 
-S_INLINE vec4 vec4_(float x, float y, float z, float w) {
+S_INLINE vec4 vec4Create(float x, float y, float z, float w) {
 	vec4 c = { x, y, z, w };
 	return c;
 }
 
-S_INLINE vec2 vec2_neg(vec2 a)
+S_INLINE vec2 vec2Neg(vec2 a)
 {
 	a.x = -a.x;
 	a.y = -a.y;
 	return a;
 }
 
-S_INLINE vec3 vec3_neg(vec3 a)
+S_INLINE vec3 vec3Neg(vec3 a)
 {
 	a.x = -a.x;
 	a.y = -a.y;
@@ -100,13 +100,13 @@ S_INLINE vec3 vec3_neg(vec3 a)
 	return a;
 }
 
-S_INLINE vec4 vec4_neg(vec4 a)
+S_INLINE vec4 vec4Neg(vec4 a)
 {
 	a.ssevalue = _mm_mul_ps(a.ssevalue, _mm_set1_ps(-1));
 	return a;
 }
 
-S_INLINE vec2 vec2_add(vec2 a, vec2 b)
+S_INLINE vec2 vec2Add(vec2 a, vec2 b)
 {
 	vec2 c;
 
@@ -115,7 +115,7 @@ S_INLINE vec2 vec2_add(vec2 a, vec2 b)
 	return c;
 }
 
-S_INLINE vec3 vec3_add(vec3 a, vec3 b)
+S_INLINE vec3 vec3Add(vec3 a, vec3 b)
 {
 	vec3 c;
 
@@ -125,7 +125,7 @@ S_INLINE vec3 vec3_add(vec3 a, vec3 b)
 	return c;
 }
 
-S_INLINE vec4 vec4_add(vec4 a, vec4 b)
+S_INLINE vec4 vec4Add(vec4 a, vec4 b)
 {	
 	vec4 c;
 	
@@ -133,7 +133,7 @@ S_INLINE vec4 vec4_add(vec4 a, vec4 b)
 	return c;
 }
 
-S_INLINE vec2 vec2_sub(vec2 a, vec2 b)
+S_INLINE vec2 vec2Sub(vec2 a, vec2 b)
 {
 	vec2 c;
 
@@ -142,7 +142,7 @@ S_INLINE vec2 vec2_sub(vec2 a, vec2 b)
 	return c;
 }
 
-S_INLINE vec3 vec3_sub(vec3 a, vec3 b)
+S_INLINE vec3 vec3Sub(vec3 a, vec3 b)
 {
 	vec3 c;
 
@@ -152,14 +152,14 @@ S_INLINE vec3 vec3_sub(vec3 a, vec3 b)
 	return c;
 }
 
-S_INLINE vec4 vec4_sub(vec4 a, vec4 b)
+S_INLINE vec4 vec4Sub(vec4 a, vec4 b)
 {
 	vec4 c;
 	c.ssevalue = _mm_sub_ps(a.ssevalue, b.ssevalue);
 	return c;
 }
 
-S_INLINE vec2 vec2_mul(vec2 a, vec2 b)
+S_INLINE vec2 vec2Mul(vec2 a, vec2 b)
 {
 	vec2 c;
 
@@ -168,7 +168,7 @@ S_INLINE vec2 vec2_mul(vec2 a, vec2 b)
 	return c;
 }
 
-S_INLINE vec3 vec3_mul(vec3 a, vec3 b)
+S_INLINE vec3 vec3Mul(vec3 a, vec3 b)
 {
 	vec3 c;
 
@@ -178,14 +178,14 @@ S_INLINE vec3 vec3_mul(vec3 a, vec3 b)
 	return c;
 }
 
-S_INLINE vec4 vec4_mul(vec4 a, vec4 b)
+S_INLINE vec4 vec4Mul(vec4 a, vec4 b)
 {
 	vec4 c;
 	c.ssevalue = _mm_mul_ps(a.ssevalue, b.ssevalue);
 	return c;
 }
 
-S_INLINE vec2 vec2_div(vec2 a, vec2 b)
+S_INLINE vec2 vec2Div(vec2 a, vec2 b)
 {
 	vec2 c;
 
@@ -194,7 +194,7 @@ S_INLINE vec2 vec2_div(vec2 a, vec2 b)
 	return c;
 }
 
-S_INLINE vec3 vec3_div(vec3 a, vec3 b)
+S_INLINE vec3 vec3Div(vec3 a, vec3 b)
 {
 	vec3 c;
 
@@ -204,24 +204,24 @@ S_INLINE vec3 vec3_div(vec3 a, vec3 b)
 	return c;
 }
 
-S_INLINE vec4 vec4_div(vec4 a, vec4 b)
+S_INLINE vec4 vec4Div(vec4 a, vec4 b)
 {
 	vec4 c;
 	c.ssevalue = _mm_div_ps(a.ssevalue, b.ssevalue);
 	return c;
 }
 
-S_INLINE float vec2_dot(vec2 a, vec2 b) 
+S_INLINE float vec2Dot(vec2 a, vec2 b) 
 {
 	return a.x * b.x + a.y * b.y;
 }
 
-S_INLINE float vec3_dot(vec3 a, vec3 b)
+S_INLINE float vec3Dot(vec3 a, vec3 b)
 {
 	return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
-S_INLINE float vec4_dot(vec4 a, vec4 b)
+S_INLINE float vec4Dot(vec4 a, vec4 b)
 {
 	float result;
 	//multiply, sum and store in result
@@ -232,42 +232,42 @@ S_INLINE float vec4_dot(vec4 a, vec4 b)
 	return result;
 }
 
-S_INLINE float vec2_length_squared(vec2 a)
+S_INLINE float vec2LengthSquared(vec2 a)
 {
-	return vec2_dot(a, a);
+	return vec2Dot(a, a);
 }
 
-S_INLINE float vec3_length_squared(vec3 a)
+S_INLINE float vec3LengthSquared(vec3 a)
 {
-	return vec3_dot(a, a);
+	return vec3Dot(a, a);
 }
 
-S_INLINE float vec4_length_squared(vec4 a)
+S_INLINE float vec4LengthSquared(vec4 a)
 {
-	return vec4_dot(a, a);
+	return vec4Dot(a, a);
 }
 
-S_INLINE float vec2_length(vec2 a)
+S_INLINE float vec2Length(vec2 a)
 {
 	return sqrtf(a.x * a.x + a.y * a.y);
 }
 
-S_INLINE float vec3_length(vec3 a)
+S_INLINE float vec3Length(vec3 a)
 {
 	return sqrtf(a.x * a.x + a.y * a.y + a.z * a.z);
 }
 
-S_INLINE float vec4_length(vec4 a)
+S_INLINE float vec4Length(vec4 a)
 {
-	return sqrtf(vec4_length_squared(a));
+	return sqrtf(vec4LengthSquared(a));
 }
 //return z coordinate of 3d vector perpendicular to 2d vectors a and b 
-S_INLINE float vec2_cross(vec2 a, vec2 b) 
+S_INLINE float vec2Cross(vec2 a, vec2 b) 
 {
 	return a.x*b.y - a.y*b.x;
 }
 
-S_INLINE vec3 vec3_cross(vec3 a, vec3 b)
+S_INLINE vec3 vec3Cross(vec3 a, vec3 b)
 {
 	vec3 c;
 	c.x = a.y*b.z - a.z*b.y;
@@ -276,7 +276,7 @@ S_INLINE vec3 vec3_cross(vec3 a, vec3 b)
 	return c;
 }
 
-S_INLINE vec2 vec2_scale(vec2 a, float scalar)
+S_INLINE vec2 vec2Scale(vec2 a, float scalar)
 {
 	vec2 c;
 	c.x = a.x * scalar;
@@ -284,7 +284,7 @@ S_INLINE vec2 vec2_scale(vec2 a, float scalar)
 	return c;
 }
 
-S_INLINE vec3 vec3_scale(vec3 a, float scalar)
+S_INLINE vec3 vec3Scale(vec3 a, float scalar)
 {
 	vec3 c;
 	c.x = a.x * scalar;
@@ -293,7 +293,7 @@ S_INLINE vec3 vec3_scale(vec3 a, float scalar)
 	return c;
 }
 
-S_INLINE vec4 vec4_scale(vec4 a, float scalar)
+S_INLINE vec4 vec4Scale(vec4 a, float scalar)
 {
 	vec4 c;
 	__m128 multiplier = _mm_set1_ps(scalar);
@@ -302,7 +302,7 @@ S_INLINE vec4 vec4_scale(vec4 a, float scalar)
 	return c;
 }
 
-S_INLINE vec2 vec2_decreace(vec2 a, float scalar)
+S_INLINE vec2 vec2Decreace(vec2 a, float scalar)
 {
 	vec2 c;
 	c.x = a.x / scalar;
@@ -310,7 +310,7 @@ S_INLINE vec2 vec2_decreace(vec2 a, float scalar)
 	return c;
 }
 
-S_INLINE vec3 vec3_decreace(vec3 a, float scalar)
+S_INLINE vec3 vec3Decreace(vec3 a, float scalar)
 {
 	vec3 c;
 	c.x = a.x / scalar;
@@ -319,7 +319,7 @@ S_INLINE vec3 vec3_decreace(vec3 a, float scalar)
 	return c;
 }
 
-S_INLINE vec4 vec4_decreace(vec4 a, float scalar)
+S_INLINE vec4 vec4Decreace(vec4 a, float scalar)
 {
 	vec4 c;
 	__m128 multiplier = _mm_set1_ps(scalar);
@@ -328,57 +328,57 @@ S_INLINE vec4 vec4_decreace(vec4 a, float scalar)
 	return c;
 }
 
-S_INLINE vec2 vec2_normalize(vec2 a)
+S_INLINE vec2 vec2Normalize(vec2 a)
 {
-	return vec2_decreace(a, vec2_length(a));
+	return vec2Decreace(a, vec2Length(a));
 }
 
-S_INLINE vec3 vec3_normalize(vec3 a)
+S_INLINE vec3 vec3Normalize(vec3 a)
 {
-	return vec3_decreace(a, vec3_length(a));
+	return vec3Decreace(a, vec3Length(a));
 }
 
-S_INLINE vec4 vec4_normalize(vec4 a)
+S_INLINE vec4 vec4Normalize(vec4 a)
 {
-	return vec4_decreace(a, vec4_length(a));
+	return vec4Decreace(a, vec4Length(a));
 }
 
-S_INLINE mat44 mat44_identity(float diagonal) 
+S_INLINE mat44 mat44Identity(float diagonal) 
 {
 	mat44 c;
-	c.value[0] = vec4_(diagonal, 0, 0, 0);
-	c.value[1] = vec4_(0, diagonal, 0, 0);
-	c.value[2] = vec4_(0, 0, diagonal, 0);
-	c.value[3] = vec4_(0, 0, 0, diagonal);
+	c.value[0] = vec4Create(diagonal, 0, 0, 0);
+	c.value[1] = vec4Create(0, diagonal, 0, 0);
+	c.value[2] = vec4Create(0, 0, diagonal, 0);
+	c.value[3] = vec4Create(0, 0, 0, diagonal);
 	return c;
 }
 
-S_INLINE mat44 mat44_transpose(mat44 a)
+S_INLINE mat44 mat44Transpose(mat44 a)
 {
 	_MM_TRANSPOSE4_PS(a.value[0].ssevalue, a.value[1].ssevalue, a.value[2].ssevalue, a.value[3].ssevalue);
 	return a;
 }
 
-S_INLINE mat44 mat44_scale_uniform(float scalar) 
+S_INLINE mat44 mat44ScaleUniform(float scalar) 
 {
 	mat44 c;
-	c.value[0] = vec4_(scalar, 0, 0, 0);
-	c.value[1] = vec4_(0, scalar, 0, 0);
-	c.value[2] = vec4_(0, 0, scalar, 0);
-	c.value[3] = vec4_(0, 0, 0, 1);
+	c.value[0] = vec4Create(scalar, 0, 0, 0);
+	c.value[1] = vec4Create(0, scalar, 0, 0);
+	c.value[2] = vec4Create(0, 0, scalar, 0);
+	c.value[3] = vec4Create(0, 0, 0, 1);
 	return c;
 }
 
-S_INLINE mat44 mat44_translate(vec3 a)
+S_INLINE mat44 mat44Translate(vec3 a)
 {
-	mat44 c = mat44_identity(1.0f);
+	mat44 c = mat44Identity(1.0f);
 	c.value[3].xyz = a;
 	return c;
 }
 
-S_INLINE mat44 mat44_rotate_by_x(float radians) 
+S_INLINE mat44 mat44RotateByX(float radians) 
 {
-	mat44 c = mat44_identity(1.0f);
+	mat44 c = mat44Identity(1.0f);
 	c.value[1].value[1] = cosf(radians);
 	c.value[2].value[2] = cosf(radians);
 	c.value[1].value[2] = -sinf(radians);
@@ -386,9 +386,9 @@ S_INLINE mat44 mat44_rotate_by_x(float radians)
 	return c;
 }
 
-S_INLINE mat44 mat44_rotate_by_y(float radians) 
+S_INLINE mat44 mat44RotateByY(float radians) 
 {
-	mat44 c = mat44_identity(1.0f);
+	mat44 c = mat44Identity(1.0f);
 	c.value[0].value[0] = cosf(radians);
 	c.value[2].value[2] = cosf(radians);
 	c.value[0].value[2] = sinf(radians);
@@ -396,9 +396,9 @@ S_INLINE mat44 mat44_rotate_by_y(float radians)
 	return c;
 }
 
-S_INLINE mat44 mat44_rotate_by_z(float radians) 
+S_INLINE mat44 mat44RotateByZ(float radians) 
 {
-	mat44 c = mat44_identity(1.0f);
+	mat44 c = mat44Identity(1.0f);
 	c.value[0].value[0] = cosf(radians);
 	c.value[1].value[1] = cosf(radians);
 	c.value[0].value[1] = -sinf(radians);
@@ -406,7 +406,7 @@ S_INLINE mat44 mat44_rotate_by_z(float radians)
 	return c;
 }
 
-S_INLINE mat44 mat44_add(mat44 a, mat44 b)
+S_INLINE mat44 mat44Add(mat44 a, mat44 b)
 {
 	mat44 c;
 	c.value[0].ssevalue = _mm_add_ps(a.value[0].ssevalue, b.value[0].ssevalue);
@@ -415,7 +415,7 @@ S_INLINE mat44 mat44_add(mat44 a, mat44 b)
 	c.value[3].ssevalue = _mm_add_ps(a.value[3].ssevalue, b.value[3].ssevalue);
 }
 
-S_INLINE __m128 sse_vec_mat44_multiply(__m128 a, mat44 b)
+S_INLINE __m128 sseVecMat44Multiply(__m128 a, mat44 b)
 {
 	__m128 c = _mm_mul_ps(_mm_shuffle_ps(a, a, SHUFFLE_PARAM(0, 0, 0, 0)), b.value[0].ssevalue);
 	c = _mm_add_ps(c, _mm_mul_ps(_mm_shuffle_ps(a, a, SHUFFLE_PARAM(1, 1, 1, 1)), b.value[1].ssevalue));
@@ -424,25 +424,25 @@ S_INLINE __m128 sse_vec_mat44_multiply(__m128 a, mat44 b)
 	return c;
 }
 
-S_INLINE mat44 mat44_multiply(mat44 a, mat44 b)
+S_INLINE mat44 mat44Multiply(mat44 a, mat44 b)
 {
 	mat44 c;
-	c.value[0].ssevalue = sse_vec_mat44_multiply(a.value[0].ssevalue, b);
-	c.value[1].ssevalue = sse_vec_mat44_multiply(a.value[1].ssevalue, b);
-	c.value[2].ssevalue = sse_vec_mat44_multiply(a.value[2].ssevalue, b);
-	c.value[3].ssevalue = sse_vec_mat44_multiply(a.value[3].ssevalue, b);
+	c.value[0].ssevalue = sseVecMat44Multiply(a.value[0].ssevalue, b);
+	c.value[1].ssevalue = sseVecMat44Multiply(a.value[1].ssevalue, b);
+	c.value[2].ssevalue = sseVecMat44Multiply(a.value[2].ssevalue, b);
+	c.value[3].ssevalue = sseVecMat44Multiply(a.value[3].ssevalue, b);
 	return c;
 }
 
-S_INLINE quat quat_from_vec3(vec3 a, float radians) 
+S_INLINE quat quatFromVec3(vec3 a, float radians) 
 {
 	quat c;
 	float tmp = radians / 2;
-	c.xyz = vec3_scale(a, sinf(tmp));
+	c.xyz = vec3Scale(a, sinf(tmp));
 	c.w = cosf(tmp);
 }
 
-S_INLINE quat quat_from_vec4_v2(vec4 a, float radians)
+S_INLINE quat quatFromVec4V2(vec4 a, float radians)
 {
 	quat c;
 	float tmp = radians / 2;
@@ -453,25 +453,25 @@ S_INLINE quat quat_from_vec4_v2(vec4 a, float radians)
 	return c;
 }
 
-S_INLINE quat quat_normalize(quat a) 
+S_INLINE quat quatNormalize(quat a) 
 {
-	return vec4_normalize(a);
+	return vec4Normalize(a);
 }
 
-S_INLINE quat quat_conjugate(quat a)
+S_INLINE quat quatConjugate(quat a)
 {
-	a.xyz = vec3_neg(a.xyz);
+	a.xyz = vec3Neg(a.xyz);
 	return a;
 }
 
-S_INLINE quat quat_conjugate_sse(quat a)
+S_INLINE quat quatConjugateSse(quat a)
 {
 	__m128 tmp = _mm_set_ps(1, -1, -1, -1);
 	a.ssevalue = _mm_mul_ps(a.ssevalue, tmp);
 	return a;
 }
 
-S_INLINE quat quat_multiply(quat a, quat b) 
+S_INLINE quat quatMultiply(quat a, quat b) 
 {
 	quat c;
 
@@ -488,22 +488,24 @@ S_INLINE quat quat_multiply(quat a, quat b)
 	return c;
 }
 
-S_INLINE vec3 quat_vec2_rotate(quat a, vec2 b) {
+S_INLINE vec3 quatVec2Rotate(quat a, vec2 b) 
+{
 	quat tmp;
 	tmp.ssevalue = _mm_set_ps(0, 0, b.y, b.x);
-	tmp = quat_multiply(a, tmp);
-	quat conjugate = quat_conjugate_sse(a);
-	tmp = quat_multiply(tmp, conjugate);
+	tmp = quatMultiply(a, tmp);
+	quat conjugate = quatConjugateSse(a);
+	tmp = quatMultiply(tmp, conjugate);
 	vec3 c = { tmp.x, tmp.y, tmp.z };
 	return c;
 }
 
-S_INLINE vec3 quat_vec3_rotate(quat a, vec3 b) {
+S_INLINE vec3 quat_vec3_rotate(quat a, vec3 b) 
+{
 	quat tmp;
 	tmp.ssevalue = _mm_set_ps(0, b.z, b.x, b.y);
-	tmp = quat_multiply(a, tmp);
-	quat conjugate = quat_conjugate_sse(a);
-	tmp = quat_multiply(tmp, conjugate);
+	tmp = quatMultiply(a, tmp);
+	quat conjugate = quatConjugateSse(a);
+	tmp = quatMultiply(tmp, conjugate);
 	vec3 c = { tmp.x, tmp.y, tmp.z };
 	return c;
 }
