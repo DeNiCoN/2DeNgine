@@ -32,8 +32,9 @@ void* linAlloc(LinearAllocator* alloc, size_t size)
 
 void linAllocInit(LinearAllocator* alloc, char* buffer, size_t bufSize) 
 {
-	LinearAllocator c = { buffer, bufSize, 0 };
-	return c;
+	alloc->buffer = buffer;
+	alloc->size = bufSize;
+	alloc->offset = 0;
 }
 
 void linReset(LinearAllocator* alloc) 

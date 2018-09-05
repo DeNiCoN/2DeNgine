@@ -15,36 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\math\linearmath.h">
+    <ClInclude Include="src\core\math\linearmath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\memory\linearAlloc.h">
+    <ClInclude Include="src\core\math\prng.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\memory\stackAlloc.h">
+    <ClInclude Include="src\core\memory\linearAlloc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\memory\poolAlloc.h">
+    <ClInclude Include="src\core\memory\memutils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\memory\memutils.h">
+    <ClInclude Include="src\core\memory\poolAlloc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\prng.h">
+    <ClInclude Include="src\core\memory\stackAlloc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\memory\linearAlloc.c">
+    <ClCompile Include="src\core\math\prng.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\memory\stackAlloc.c">
+    <ClCompile Include="src\core\memory\linearAlloc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\memory\poolAlloc.c">
+    <ClCompile Include="src\core\memory\poolAlloc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\math\prng.c">
+    <ClCompile Include="src\core\memory\stackAlloc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
