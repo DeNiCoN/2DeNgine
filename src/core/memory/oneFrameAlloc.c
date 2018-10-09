@@ -3,7 +3,7 @@
 #include "memutils.h"
 #include <stdio.h>
 
-void* linAllocAligned(LinearAllocator* alloc, size_t size, size_t align) 
+void* frameAllocAligned(OneFrameAllocator* alloc, size_t size, size_t align)
 {
 	if (align & (align - 1)) 
 	{
@@ -19,7 +19,7 @@ void* linAllocAligned(LinearAllocator* alloc, size_t size, size_t align)
 	return (void*)(rawPtr & ~addBytes);
 }
 
-void* linAlloc(LinearAllocator* alloc, size_t size) 
+void* frameAlloc(OneFrameAllocator* alloc, size_t size)
 {
 	size_t prevOffset = alloc->offset;
 	if (alloc->offset + size > alloc->size) 
@@ -30,19 +30,19 @@ void* linAlloc(LinearAllocator* alloc, size_t size)
 	return alloc->buffer + prevOffset;
 }
 
-void linAllocInit(LinearAllocator* alloc, char* buffer, size_t bufSize) 
+void frameAllocInit(OneFrameAllocator* alloc, char* buffer, size_t bufSize)
 {
 	alloc->buffer = buffer;
 	alloc->size = bufSize;
 	alloc->offset = 0;
 }
 
-void linReset(LinearAllocator* alloc) 
+void frameReset(OneFrameAllocator* alloc)
 {
 	alloc->offset = 0;
 }
 
-void linFree(LinearAllocator* alloc, void* pointer) 
+void frameFree(OneFrameAllocator* alloc, void* pointer)
 {
 
 }
