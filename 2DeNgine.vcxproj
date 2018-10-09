@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="src\core\math\linearmath.h" />
     <ClInclude Include="src\core\math\prng.h" />
+    <ClInclude Include="src\core\memory\linearAlloc.h" />
     <ClInclude Include="src\core\memory\oneFrameAlloc.h" />
     <ClInclude Include="src\core\memory\memutils.h" />
     <ClInclude Include="src\core\memory\poolAlloc.h" />
