@@ -15,6 +15,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\memory\stackAlloc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\core\math\linearmath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -28,9 +31,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\memory\poolAlloc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\memory\stackAlloc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

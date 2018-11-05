@@ -18,6 +18,20 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\core\math\linearmath.h" />
+    <ClInclude Include="src\core\math\prng.h" />
+    <ClInclude Include="src\core\memory\linearAlloc.h" />
+    <ClInclude Include="src\core\memory\memutils.h" />
+    <ClInclude Include="src\core\memory\poolAlloc.h" />
+    <ClInclude Include="src\core\memory\stackAlloc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\math\prng.c" />
+    <ClCompile Include="src\core\memory\linearAlloc.c" />
+    <ClCompile Include="src\core\memory\poolAlloc.c" />
+    <ClCompile Include="src\core\memory\stackAlloc.c" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{EA1AA945-D844-463A-A1B0-04FC327CF9A6}</ProjectGuid>
@@ -146,20 +160,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="src\core\math\linearmath.h" />
-    <ClInclude Include="src\core\math\prng.h" />
-    <ClInclude Include="src\core\memory\linearAlloc.h" />
-    <ClInclude Include="src\core\memory\memutils.h" />
-    <ClInclude Include="src\core\memory\poolAlloc.h" />
-    <ClInclude Include="src\core\memory\stackAlloc.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\core\math\prng.c" />
-    <ClCompile Include="src\core\memory\linearAlloc.c" />
-    <ClCompile Include="src\core\memory\poolAlloc.c" />
-    <ClCompile Include="src\core\memory\stackAlloc.c" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -1,6 +1,10 @@
 #pragma once
 #include <ctype.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct {
 	char* buffer;
 	size_t size;
@@ -12,3 +16,7 @@ void* linAlloc(LinearAllocator* alloc, size_t size);
 void linAllocInit(LinearAllocator* alloc, char* buffer, size_t bufSize);
 void linFree(LinearAllocator* alloc, void* pointer); // Do nothing
 void linReset(LinearAllocator* alloc); //Set offset to 0
+
+#ifdef __cplusplus
+}
+#endif

@@ -1,11 +1,11 @@
 #include "poolAlloc.h"
 #include <ctype.h>
 
-void poolInit(PoolAllocator* alloc, char* buffer, size_t objSize, unsigned int objCount) 
+int poolInit(PoolAllocator* alloc, char* buffer, size_t objSize, unsigned int objCount) 
 {
 	if (objSize < MIN_POOL_OBJECT_SIZE_BYTES) 
 	{
-		return;
+		return 0;
 	}
 	alloc->buffer = buffer;
 	alloc->nextFreeBlock = (void*)buffer;
@@ -13,25 +13,30 @@ void poolInit(PoolAllocator* alloc, char* buffer, size_t objSize, unsigned int o
 	alloc->objCount = objCount;
 	char* current = buffer;
 	char* next;
-	for (int i = 0; i < objCount; i++) 
+	for (unsigned int i = 0; i < objCount; i++) 
 	{
 		next = current + objSize;
 		*((uintptr_t*)current) = (uintptr_t) next;
 		current = next;
 	}
-	*((uintptr_t*)(current - objSize)) = NULL;
+	*((uintptr_t*)(current - objSize)) = (uintptr_t) NULL;
+	return 1;
 }
 
 void* poolAlloc(PoolAllocator* alloc) 
 {
-	void* ptr = alloc->nextFreeBlock;
-	alloc->nextFreeBlock = (void*) (*(uintptr_t*)ptr);
-	return ptr;
+	if (alloc->nextFreeBlock)
+	{
+		void* ptr = alloc->nextFreeBlock;
+		alloc->nextFreeBlock = (void*)(*(uintptr_t*)ptr); // take pointer from ptr and set nextFreeBlock to it
+		return ptr;
+	}
+	return NULL;
 }
 
 void poolFree(PoolAllocator* alloc, void* pointer) 
 {
-	*((uintptr_t*) pointer) = alloc->nextFreeBlock;
+	*((uintptr_t*) pointer) = (uintptr_t) alloc->nextFreeBlock; // write nextFreeBlock in point that pointer points
 	alloc->nextFreeBlock = pointer;
 }
 
