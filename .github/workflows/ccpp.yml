@@ -12,6 +12,15 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macOS-latest]
+        include:
+        - os: macOS-latest
+          COMPILER_FLAGS: ''
+
+        - os: ubuntu-latest
+          COMPILER_FLAGS: '-Wall -Wextra'
+
+        - os: windows-latest
+          COMPILER_FLAGS: '/W4 /w14640'
 
     steps:
     - uses: actions/checkout@v1
@@ -22,7 +31,7 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${{ matrix.os.COMPILE_FLAGS }}"
 
     - name: Build
       working-directory: ${{runner.workspace}}/build
