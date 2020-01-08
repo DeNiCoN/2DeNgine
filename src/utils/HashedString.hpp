@@ -8,8 +8,8 @@ namespace utils {
 struct HashedString
 {
     const char* str;
-    const unsigned int length;
-    const unsigned int hashed;
+    const std::uint32_t length;
+    const std::uint32_t hashed;
     virtual ~HashedString() = default;
     constexpr HashedString(const char* c_str)
         :length(std::char_traits<char>::length(c_str)),
@@ -19,19 +19,8 @@ struct HashedString
 
 inline constexpr bool operator==(const HashedString& a, const HashedString& b)
 {
-    if (a.hashed != b.hashed || a.length != b.length)
-    {
-        return false;
-    }
-
-    for (int i = 0; i < a.length; ++i)
-    {
-        if(a.str[i] != b.str[i])
-        {
-            return false;
-        }
-    }
-    return true;
+    //Additional length check for better accuracy
+    return (a.hashed == b.hashed) && (a.length == b.length);
 }
 
 } // namespace utils
@@ -42,6 +31,6 @@ template<>
 class hash<DeNgine::utils::HashedString>
 {
 public:
-  constexpr size_t operator()(const DeNgine::utils::HashedString &s) const { return s.hashed; }
+  constexpr std::size_t operator()(const DeNgine::utils::HashedString &s) const { return s.hashed; }
 };
 } // namespace ::std
