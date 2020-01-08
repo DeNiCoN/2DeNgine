@@ -42,7 +42,7 @@ jobs:
         shell: bash
         run: | 
           cmake -E make_directory ${{runner.workspace}}/build
-          npm install --prefix clang-tools-prebuilt
+          npm install clang-tools-prebuilt
         
       - name: Configure CMake
         working-directory: ${{runner.workspace}}/build
