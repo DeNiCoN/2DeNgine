@@ -41,13 +41,13 @@ jobs:
       - name: Create Environment
         shell: bash
         run: | 
-          cmake -E make_directory ${{runner.workspace}}/build/node_modules
-          npm install --prefix ${{runner.workspace}}/build/node_modules clang-tools-prebuilt
+          cmake -E make_directory ${{runner.workspace}}/build
+          npm install --prefix clang-tools-prebuilt
         
       - name: Configure CMake
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_CLANG_TIDY="node_modules/clang-tools-prebuilt/dist/bin/clang-tidy;$CLANG_TIDY_ARGS"
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_CLANG_TIDY="$GITHUB_WORKSPACE/node_modules/clang-tools-prebuilt/dist/bin/clang-tidy;$CLANG_TIDY_ARGS"
         
       - name: Run Checks
         working-directory: ${{runner.workspace}}/build
