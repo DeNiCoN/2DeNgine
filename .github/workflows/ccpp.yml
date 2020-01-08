@@ -28,28 +28,3 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . --config $BUILD_TYPE
-  static_analyze:
-    env:
-      CXX: clang++
-      C: clang
-      CXXFLAGS: -Wall -Wextra
-      CLANG_TIDY_ARGS: -header-filter=.;-checks=*,-abseil-*,-android-*,-boost-*,-futchia-*,-google-*,-llvm-*,-mpi-*,-objc-*,-openmp-*,-zircon-*
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-        
-      - name: Create Environment
-        shell: bash
-        run: | 
-          cmake -E make_directory ${{runner.workspace}}/build
-          npm install clang-tools-prebuilt
-        
-      - name: Configure CMake
-        working-directory: ${{runner.workspace}}/build
-        shell: bash
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_CLANG_TIDY="$GITHUB_WORKSPACE/node_modules/clang-tools-prebuilt/dist/bin/clang-tidy;$CLANG_TIDY_ARGS"
-        
-      - name: Run Checks
-        working-directory: ${{runner.workspace}}/build
-        shell: bash
-        run: cmake --build .
