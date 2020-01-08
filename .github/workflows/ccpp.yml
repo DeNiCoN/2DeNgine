@@ -20,7 +20,7 @@ jobs:
           COMPILER_FLAGS: '-Wall -Wextra'
 
         - os: windows-latest
-          COMPILER_FLAGS: '/W4 /w14640'
+          COMPILER_FLAGS: ''
 
     steps:
     - uses: actions/checkout@v1
