@@ -15,18 +15,21 @@ struct HashedString
         :length(std::char_traits<char>::length(c_str)),
          hashed(hash(c_str, length)), str(c_str)
     {}
-
-
 };
 
 inline constexpr bool operator==(const HashedString& a, const HashedString& b)
 {
     if (a.hashed != b.hashed || a.length != b.length)
+    {
         return false;
+    }
+
     for (int i = 0; i < a.length; ++i)
     {
         if(a.str[i] != b.str[i])
+        {
             return false;
+        }
     }
     return true;
 }

@@ -16,9 +16,6 @@ struct Resource : public utils::HashedString
         assert(std::char_traits<char>::find(t_name, length, separator) &&
                "No separator in resource name");
     }
-
-private:
-
 };
 
 class ResourceHandle
