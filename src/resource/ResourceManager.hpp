@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __RESOURCE_MANAGER_H_
+#define __RESOURCE_MANAGER_H_
 #include <vector>
 #include <memory>
 #include <cassert>
@@ -41,3 +42,4 @@ public:
 
 };
 }
+#endif

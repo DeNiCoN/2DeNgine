@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef __HASHEDSTRING_H_
+#define __HASHEDSTRING_H_
 #include "utils/hash.h"
 
 namespace DeNgine {
@@ -12,8 +12,8 @@ struct HashedString
     const std::uint32_t hashed;
     virtual ~HashedString() = default;
     constexpr HashedString(const char* c_str)
-        :length(std::char_traits<char>::length(c_str)),
-         hashed(hash(c_str, length)), str(c_str)
+        :str(c_str), length(std::char_traits<char>::length(c_str)),
+         hashed(hash(c_str, length))
     {}
 };
 
@@ -34,3 +34,4 @@ public:
   constexpr std::size_t operator()(const DeNgine::utils::HashedString &s) const { return s.hashed; }
 };
 } // namespace ::std
+#endif
