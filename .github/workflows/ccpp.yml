@@ -31,9 +31,14 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${{ matrix.COMPILER_FLAGS }}"
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${{ matrix.COMPILER_FLAGS }}" -D2DENGINE_BUILD_TESTS=ON
 
     - name: Build
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . --config $BUILD_TYPE
+
+    - name: Run Tests
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: ctest

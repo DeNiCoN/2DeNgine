@@ -23,6 +23,11 @@ inline constexpr bool operator==(const HashedString& a, const HashedString& b)
     return (a.hashed == b.hashed) && (a.length == b.length);
 }
 
+inline constexpr bool operator!=(const HashedString& a, const HashedString& b)
+{
+    return !(a == b);
+}
+
 } // namespace utils
 } // namespace DeNgine
 

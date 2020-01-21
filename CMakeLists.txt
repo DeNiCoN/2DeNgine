@@ -8,7 +8,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 option(2DENGINE_BUILD_TESTS "Build 2DeNgine tests")
 
 if(2DENGINE_BUILD_TESTS)
-
+  enable_testing()
+  add_subdirectory("tests")
+endif()
 
 add_library(2DeNgine STATIC
   "src/resource/ResourceManager.cpp"
