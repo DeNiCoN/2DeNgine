@@ -6,30 +6,34 @@
 #include "utils/HashedString.hpp"
 
 namespace DeNgine {
-struct Resource : public utils::HashedString
+
+class ResourceHandle;
+
+using Resource = utils::HashedString;
+using ResourceHandlePtr = std::shared_ptr<ResourceHandle>;
+
+class ResourceHandleData
 {
-    const unsigned int separatorPos;
-    static const char separator = '|';
-    constexpr Resource(const char* t_name)
-        :HashedString(t_name),
-         separatorPos(t_name - std::char_traits<char>::find(t_name, length, separator))
-    {
-        assert(std::char_traits<char>::find(t_name, length, separator) &&
-               "No separator in resource name");
-    }
+
 };
 
 class ResourceHandle
 {
-
+    ResourceHandleData& m_data;
 public:
-    ResourceHandle();
+    const Resource resource;
+    ResourceHandle(Resource& t_res);
 };
 
-using ResourceHandlePtr = std::shared_ptr<ResourceHandle>;
+class ResourceLoader
+{
+    virtual ResourceHandleData VLoad(Resource& t_res) = 0;
+
+};
 
 class ResourceManager
 {
+    std::vector<ResourceHandlePtr> m_LRUList;
 
 public:
     ResourceManager(unsigned int sizeMB);
@@ -37,9 +41,6 @@ public:
     //Check if resource is loaded then return it, else check is
     //is resource loader present, is resource file loaded
     ResourceHandlePtr getHandle(const Resource& t_resource);
-
-
-
 };
 }
 #endif

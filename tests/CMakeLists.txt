@@ -15,6 +15,7 @@ FetchContent_MakeAvailable(googletest)
 include(GoogleTest)
 add_executable(Tests
   "HashedStringTest.cpp"
+  "LRUCacheTest.cpp"
   )
 target_include_directories(Tests
   PUBLIC "../src"

@@ -36,7 +36,7 @@ template<>
 class hash<DeNgine::utils::HashedString>
 {
 public:
-  constexpr std::size_t operator()(const DeNgine::utils::HashedString &s) const { return s.hashed; }
+    constexpr std::size_t operator()(const DeNgine::utils::HashedString &s) const { return s.hashed; }
 };
 } // namespace ::std
 #endif

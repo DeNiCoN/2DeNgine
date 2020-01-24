@@ -41,4 +41,4 @@ jobs:
     - name: Run Tests
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      run: ctest
+      run: ./tests/Tests
