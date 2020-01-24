@@ -3,9 +3,4 @@
 namespace DeNgine
 {
 
-ResourceHandlePtr ResourceManager::getHandle(const Resource &t_resource)
-{
-
-}
-
 }

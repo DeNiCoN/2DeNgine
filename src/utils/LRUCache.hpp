@@ -18,8 +18,7 @@ public:
         auto value = m_hashmap.find(key);
         if (value != m_hashmap.end())
         {
-            m_LRUList.erase(value->second);
-            m_LRUList.push_front(*value->second);
+            m_LRUList.splice(m_LRUList.begin(), m_LRUList, value->second);
             return value->second;
         }
         else

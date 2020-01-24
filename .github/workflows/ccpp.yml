@@ -15,12 +15,15 @@ jobs:
         include:
         - os: macOS-latest
           COMPILER_FLAGS: ''
+          TESTS_EXECUTABLE: 'tests/Tests'
 
         - os: ubuntu-latest
           COMPILER_FLAGS: '-Wall -Wextra'
+          TESTS_EXECUTABLE: 'tests/Tests'
 
         - os: windows-latest
           COMPILER_FLAGS: ''
+          TESTS_EXECUTABLE: 'tests/$BUILD_TYPE/Tests.exe'
 
     steps:
     - uses: actions/checkout@v1
@@ -41,4 +44,4 @@ jobs:
     - name: Run Tests
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      run: ./tests/Tests
+      run: ./${{ matrix.TESTS_EXECUTABLE }}
