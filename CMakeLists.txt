@@ -20,3 +20,8 @@ target_include_directories(2DeNgine
   PUBLIC "src"
   )
 
+add_subdirectory("dependencies")
+
+target_link_libraries(2DeNgine
+  PUBLIC dependencies
+  )

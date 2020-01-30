@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 #include <string>
 using namespace std::literals;
+using namespace DeNgine;
 
 class NoHash
 {

@@ -4,6 +4,8 @@
 #include <cassert>
 #include <unordered_map>
 
+namespace DeNgine
+{
 template<typename K, typename V>
 class LRUCache
 {
@@ -62,11 +64,10 @@ public:
         return m_hashmap.size();
     }
 
-    std::pair<K, V>& back()
-    {
-        assert(size() && "back() on empty cache");
-        return m_LRUList.back();
+    std::pair<K, V> &back() {
+      assert(size() && "back() on empty cache");
+      return m_LRUList.back();
     }
 };
-
+} // namespace DeNgine
 #endif // __LRUCACHE_H_

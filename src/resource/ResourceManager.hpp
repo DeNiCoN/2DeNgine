@@ -1,13 +1,16 @@
 #ifndef __RESOURCE_MANAGER_H_
 #define __RESOURCE_MANAGER_H_
+#include <functional>
 #include <vector>
 #include <memory>
 #include <cassert>
+#include "utils/LRUCache.hpp"
 #include "utils/HashedString.hpp"
 
 namespace DeNgine {
 
 class ResourceHandle;
+class ResourceManager;
 
 using Resource = utils::HashedString;
 using ResourceHandlePtr = std::shared_ptr<ResourceHandle>;
@@ -19,28 +22,55 @@ class ResourceHandleData
 
 class ResourceHandle
 {
-    ResourceHandleData& m_data;
+    friend class ResourceManager;
+private:
+    struct _private_ { explicit _private_() = default; };
 public:
+    ResourceHandle(_private_, const Resource& t_res, const ResourceHandleData& t_data);
+    const std::unique_ptr<ResourceHandleData> data;
     const Resource resource;
-    ResourceHandle(Resource& t_res);
 };
 
-class ResourceLoader
+class IResourceLoader
 {
-    virtual ResourceHandleData VLoad(Resource& t_res) = 0;
+public:
+    virtual ~IResourceLoader() = default;
+    virtual ResourceHandleData& VLoad(char* raw_buffer, std::size_t t_rSize,
+                                     char* buffer) = 0;
+    virtual std::size_t VGetSize(const char* raw_buffer,
+                                 std::size_t t_rSize) const = 0;
+    virtual std::initializer_list<const char*> VGetExtensions() = 0;
+};
 
+class IFileSystem
+{
+public:
+    virtual ~IFileSystem() = default;
+    virtual bool VExists(const Resource& t_resource) const = 0;
+    virtual bool VGetSize(const Resource& t_resource) = 0;
+    //Load raw data into memory.
+    virtual void VLoadIntoMemory(const Resource& t_resource, char* buffer) = 0;
 };
 
 class ResourceManager
 {
-    std::vector<ResourceHandlePtr> m_LRUList;
+    LRUCache<Resource, ResourceHandlePtr> m_cache;
+    std::vector<IFileSystem> m_filesystems;
 
 public:
     ResourceManager(unsigned int sizeMB);
 
-    //Check if resource is loaded then return it, else check is
-    //is resource loader present, is resource file loaded
+    //Return pointer to loaded into memory file
+    //memory is null terminated
+    std::unique_ptr<char*> loadToMemory(const Resource& t_resource,
+                                        std::size_t* t_size,
+                                        IFileSystem* t_custom = nullptr);
+
+    //Return handle if already been loaded
+    //else return null
     ResourceHandlePtr getHandle(const Resource& t_resource);
+    ResourceHandlePtr newHandle(const Resource& t_resource,
+                                const ResourceHandleData& data);
 };
 }
 #endif
