@@ -27,7 +27,8 @@ private:
     struct _private_ { explicit _private_() = default; };
 public:
     ResourceHandle(_private_, const Resource& t_res,
-                   const std::unique_ptr<ResourceHandleData> t_data);
+                   std::unique_ptr<ResourceHandleData> t_data)
+        :data(std::move(t_data)), resource(t_res) {}
     const std::unique_ptr<ResourceHandleData> data;
     const Resource resource;
 };

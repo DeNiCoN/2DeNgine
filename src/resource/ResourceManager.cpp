@@ -2,7 +2,6 @@
 #include "string.h"
 #include <iostream>
 #include <algorithm>
-#include "utils/wildcard.hpp"
 
 namespace DeNgine
 {
@@ -48,7 +47,7 @@ std::unique_ptr<char[]> ResourceManager::loadToMemory(const Resource& t_resource
     if (t_size)
         *t_size = size;
     filesystem->VLoadIntoMemory(t_resource, raw_buffer.get());
-    return raw_buffer;
+    return std::move(raw_buffer);
 }
 
 ResourceHandlePtr ResourceManager::getHandle(const Resource &t_resource)
@@ -60,16 +59,16 @@ ResourceHandlePtr ResourceManager::getHandle(const Resource &t_resource)
     }
     else
     {
-      return ResourceHandlePtr(nullptr);
+        return ResourceHandlePtr(nullptr);
     }
 }
 
 ResourceHandlePtr ResourceManager::newHandle(const Resource& t_resource,
-                        const std::unique_ptr<ResourceHandleData> t_data)
+                                std::unique_ptr<ResourceHandleData> t_data)
 {
     ResourceHandlePtr handle =
         std::make_shared<ResourceHandle>(ResourceHandle::_private_(),
-                                         t_resource, t_data);
+                                         t_resource, std::move(t_data));
     m_cache.insert(t_resource, handle);
     return handle;
 }
