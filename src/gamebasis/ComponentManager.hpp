@@ -8,6 +8,8 @@ class XMLElement;
 namespace DeNgine
 {
 
+class Scene;
+
 namespace utils {
 class HashedString;
 }
@@ -17,9 +19,10 @@ using Actor = unsigned int;
 class IComponentManager
 {
 public:
-    virtual utils::HashedString& VName() = 0;
+    virtual utils::HashedString& VName() const = 0;
     virtual ~IComponentManager() = default;
-    virtual bool VLoadComponent(Actor, const tinyxml2::XMLElement*);
+    virtual bool VLoadComponent(Actor, const tinyxml2::XMLElement*) = 0;
+    virtual void VOnAddedTo(Scene&) = 0;
 };
 }
 #endif
