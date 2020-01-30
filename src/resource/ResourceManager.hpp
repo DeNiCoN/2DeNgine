@@ -26,7 +26,8 @@ class ResourceHandle
 private:
     struct _private_ { explicit _private_() = default; };
 public:
-    ResourceHandle(_private_, const Resource& t_res, const ResourceHandleData& t_data);
+    ResourceHandle(_private_, const Resource& t_res,
+                   const std::unique_ptr<ResourceHandleData> t_data);
     const std::unique_ptr<ResourceHandleData> data;
     const Resource resource;
 };
@@ -62,7 +63,7 @@ public:
 
     //Return pointer to loaded into memory file
     //memory is null terminated
-    std::unique_ptr<char*> loadToMemory(const Resource& t_resource,
+    std::unique_ptr<char[]> loadToMemory(const Resource& t_resource,
                                         std::size_t* t_size,
                                         IFileSystem* t_custom = nullptr);
 
@@ -70,7 +71,7 @@ public:
     //else return null
     ResourceHandlePtr getHandle(const Resource& t_resource);
     ResourceHandlePtr newHandle(const Resource& t_resource,
-                                const ResourceHandleData& data);
+                                const std::unique_ptr<ResourceHandleData> data);
 };
 }
 #endif

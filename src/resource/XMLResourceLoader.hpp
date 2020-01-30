@@ -46,7 +46,13 @@ public:
         else
         {
             auto memory = t_m.loadToMemory(t_res, nullptr, t_f);
-
+            auto data = new XMLResourceData();
+            if (!data->parseXml(memory.get()))
+            {
+                delete data;
+                return nullptr;
+            }
+            return t_m.newHandle(t_res, std::unique_ptr<ResourceHandleData>(data));
         }
 
     }

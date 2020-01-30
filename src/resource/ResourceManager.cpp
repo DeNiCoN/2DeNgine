@@ -7,7 +7,7 @@
 namespace DeNgine
 {
 
-std::unique_ptr<char*> ResourceManager::loadToMemory(const Resource& t_resource,
+std::unique_ptr<char[]> ResourceManager::loadToMemory(const Resource& t_resource,
                                     std::size_t* t_size, IFileSystem* t_custom)
 {
     //Load into memory and pass it to loader
@@ -44,11 +44,11 @@ std::unique_ptr<char*> ResourceManager::loadToMemory(const Resource& t_resource,
     }
     //Load resource from memory
     std::size_t size = filesystem->VGetSize(t_resource) + 1;
-    char* raw_buffer = new char[size];
+    auto raw_buffer = std::make_unique<char[]>(size);
     if (t_size)
         *t_size = size;
-    filesystem->VLoadIntoMemory(t_resource, raw_buffer);
-    return std::make_unique<char*>(raw_buffer);
+    filesystem->VLoadIntoMemory(t_resource, raw_buffer.get());
+    return raw_buffer;
 }
 
 ResourceHandlePtr ResourceManager::getHandle(const Resource &t_resource)
@@ -65,11 +65,11 @@ ResourceHandlePtr ResourceManager::getHandle(const Resource &t_resource)
 }
 
 ResourceHandlePtr ResourceManager::newHandle(const Resource& t_resource,
-                                             const ResourceHandleData& data)
+                        const std::unique_ptr<ResourceHandleData> t_data)
 {
     ResourceHandlePtr handle =
         std::make_shared<ResourceHandle>(ResourceHandle::_private_(),
-                                         t_resource, data);
+                                         t_resource, t_data);
     m_cache.insert(t_resource, handle);
     return handle;
 }
