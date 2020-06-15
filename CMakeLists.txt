@@ -14,13 +14,16 @@ endif()
 
 add_library(2DeNgine STATIC
   "src/resource/ResourceManager.cpp"
+  "src/Engine.cpp"
+  "src/gamebasis/ActorFactory.cpp"
+  "src/render/WindowManager.cpp"
   )
 
 target_include_directories(2DeNgine
   PUBLIC "src"
   )
 
-add_subdirectory("dependencies")
+add_subdirectory(dependencies)
 
 target_link_libraries(2DeNgine
   PUBLIC dependencies

@@ -1,6 +1,4 @@
-#ifndef __COMPONENTMANAGER_H_
-#define __COMPONENTMANAGER_H_
-
+#pragma once
 namespace tinyxml2 {
 class XMLElement;
 }
@@ -25,4 +23,3 @@ public:
     virtual void VOnAddedTo(Scene&) = 0;
 };
 }
-#endif

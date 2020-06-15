@@ -1,5 +1,4 @@
-#ifndef __SCENE_H_
-#define __SCENE_H_
+#pragma once
 #include <cassert>
 #include <functional>
 #include <unordered_map>
@@ -32,18 +31,18 @@ public:
         m_toUpdate.push_back(t_func);
     }
 
-    void removeFromUpdate(std::function<void(double)> t_func)
+    void removeFromUpdate(const std::function<void(double)> t_func)
     {
-        auto f = std::find(m_toUpdate.begin(), m_toUpdate.end(), t_func);
-        assert(f != m_toUpdate.end() && "There is no that function in ToUpdate");
-        m_toUpdate.erase(f);
+        //TODO Do something with this
+        //auto f = std::find(m_toUpdate.begin(), m_toUpdate.end(), t_func);
+        //assert(f != m_toUpdate.end() && "There is no that function in ToUpdate");
+        //m_toUpdate.erase(f);
     }
 
     void addComponentManager(IComponentManager& t_comp)
     {
-        m_CMmap[t_comp.VName()] = t_comp;
+        m_CMmap.insert({t_comp.VName(), t_comp});
         t_comp.VOnAddedTo(*this);
     }
 };
 }
-#endif

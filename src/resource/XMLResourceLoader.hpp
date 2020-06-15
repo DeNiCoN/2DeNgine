@@ -1,5 +1,4 @@
-#ifndef __XMLRESOURCELOADER_H_
-#define __XMLRESOURCELOADER_H_
+#pragma once
 
 #include "resource/ResourceManager.hpp"
 #include "tinyxml2.h"
@@ -58,5 +57,3 @@ public:
     }
 };
 }
-
-#endif // __XMLRESOURCELOADER_H_

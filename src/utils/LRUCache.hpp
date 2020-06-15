@@ -1,5 +1,4 @@
-#ifndef __LRUCACHE_H_
-#define __LRUCACHE_H_
+#pragma once
 #include <list>
 #include <cassert>
 #include <unordered_map>
@@ -70,4 +69,3 @@ public:
     }
 };
 } // namespace DeNgine
-#endif // __LRUCACHE_H_

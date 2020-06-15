@@ -32,7 +32,6 @@ std::unique_ptr<char[]> ResourceManager::loadToMemory(const Resource& t_resource
         {
             return e.VExists(t_resource);
         });
-
         if (filesystem_it == m_filesystems.end())
         {
             std::cout << "File system for resource " << t_resource.str <<

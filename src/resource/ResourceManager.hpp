@@ -1,5 +1,4 @@
-#ifndef __RESOURCE_MANAGER_H_
-#define __RESOURCE_MANAGER_H_
+#pragma once
 #include <functional>
 #include <vector>
 #include <memory>
@@ -75,4 +74,3 @@ public:
                                 const std::unique_ptr<ResourceHandleData> data);
 };
 }
-#endif

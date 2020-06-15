@@ -1,5 +1,4 @@
-#ifndef __ACTORFACTORY_H_
-#define __ACTORFACTORY_H_
+#pragma once
 #include "gamebasis/Scene.hpp"
 
 namespace DeNgine
@@ -25,4 +24,3 @@ public:
 };
 
 }
-#endif
