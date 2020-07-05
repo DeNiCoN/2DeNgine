@@ -1,5 +1,12 @@
 #pragma once
-#include "render/WindowManager.hpp"
+#include <vector>
+#include "render/RenderManager.hpp"
+#include "gamebasis/Scene.hpp"
+#include "easylogging++.h"
+
+#define ELPP_FEATURE_CRASH_LOG
+
+INITIALIZE_EASYLOGGINGPP
 
 namespace DeNgine
 {
@@ -12,8 +19,15 @@ private:
     double m_lastTime;
     double m_delay;
     WindowManager m_windowManager;
+    RenderManager m_renderManager {m_windowManager, scenes, m_resourceManager};
 
 public:
+    ::std::vector<Scene> scenes;
+    ResourceManager m_resourceManager;
+
+    const RenderManager& getRenderer() const { return m_renderManager; }
+
+
     template<typename App>
     bool shouldClose()
     {
@@ -21,13 +35,20 @@ public:
         return m_windowManager.shouldClose();
     }
 
+    bool init()
+    {
+        LOG(INFO) << "Engine initialization";
+        //Initialize engine systems
+        m_windowManager.initialize();
+        m_renderManager.initialize();
+        LOG(INFO) << "Engine initialization finished";
+        return true;
+    }
+
     template<typename App>
     bool run(App& app)
     {
-        //Initialize engine systems
-        WindowManager::initialize();
-        m_windowManager.createWindow();
-
+        LOG(INFO) << "Engine run";
         //loop
         while (!shouldClose<App>())
         {
@@ -39,15 +60,21 @@ public:
             {
                 m_delay -= 1;
                 //TODO update
+                for(auto scene : scenes)
+                {
+                    scene.update(m_delta);
+                }
             }
             //TODO render
+            m_renderManager.render(m_delay / 1.0);
 
-            glfwPollEvents();
+            m_windowManager.poolEvents();
         }
         //TODO termination
-        WindowManager::finalize();
+        m_renderManager.terminate();
+        m_windowManager.terminate();
+        LOG(INFO) << "Engine finished successfully";
         return 0;
-
     }
 };
 }

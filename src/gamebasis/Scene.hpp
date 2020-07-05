@@ -12,11 +12,22 @@ using Actor = unsigned int;
 class Scene
 {
     std::vector<std::function<void(double)>> m_toUpdate;
+    std::vector<std::function<void()>> m_toPostUpdate;
+    std::vector<std::function<void(double)>> m_toRender;
     std::unordered_map<utils::HashedString, IComponentManager&> m_CMmap;
 public:
-    const std::unordered_map<utils::HashedString, IComponentManager&>&
 
+    const std::unordered_map<utils::HashedString, IComponentManager&>&
     getComponentManagersMap() const { return m_CMmap; }
+
+    inline void postUpdate()
+    {
+        //Something predefined
+
+        //ToUpdate
+        for (auto f : m_toPostUpdate)
+            f();
+    }
 
     inline void update(double delta)
     {
@@ -27,8 +38,25 @@ public:
             f(delta);
     }
 
-    void addToUpdate(std::function<void(double)> t_func) {
+    inline void render(double delta)
+    {
+        //Something predefined
+
+        //ToUpdate
+        for (auto f : m_toRender)
+            f(delta);
+    }
+
+    inline void addToPostUpdate(std::function<void()> t_func) {
+        m_toPostUpdate.push_back(t_func);
+    }
+
+    inline void addToUpdate(std::function<void(double)> t_func) {
         m_toUpdate.push_back(t_func);
+    }
+
+    inline void addToRender(std::function<void(double)> t_func) {
+        m_toRender.push_back(t_func);
     }
 
     void removeFromUpdate(const std::function<void(double)> t_func)
@@ -39,7 +67,7 @@ public:
         //m_toUpdate.erase(f);
     }
 
-    void addComponentManager(IComponentManager& t_comp)
+    inline void addComponentManager(IComponentManager& t_comp)
     {
         m_CMmap.insert({t_comp.VName(), t_comp});
         t_comp.VOnAddedTo(*this);

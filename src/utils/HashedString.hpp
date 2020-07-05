@@ -10,7 +10,6 @@ struct HashedString
     const char* str;
     const std::uint32_t length;
     const std::uint32_t hashed;
-    virtual ~HashedString() = default;
     constexpr HashedString(const char* c_str)
         :str(c_str), length(std::char_traits<char>::length(c_str)),
          hashed(hash(c_str, length))

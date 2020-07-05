@@ -16,7 +16,8 @@ using ResourceHandlePtr = std::shared_ptr<ResourceHandle>;
 
 class ResourceHandleData
 {
-
+public:
+    virtual ~ResourceHandleData() = default;
 };
 
 class ResourceHandle
@@ -25,10 +26,10 @@ class ResourceHandle
 private:
     struct _private_ { explicit _private_() = default; };
 public:
-    ResourceHandle(_private_, const Resource& t_res,
-                   std::unique_ptr<ResourceHandleData> t_data)
-        :data(std::move(t_data)), resource(t_res) {}
-    const std::unique_ptr<ResourceHandleData> data;
+    ResourceHandle(_private_, const Resource& p_res,
+                   std::unique_ptr<ResourceHandleData> p_data)
+        :data(std::move(p_data)), resource(p_res) {}
+    const std::unique_ptr<const ResourceHandleData> data;
     const Resource resource;
 };
 
@@ -36,41 +37,45 @@ class IResourceLoader
 {
 public:
     virtual ~IResourceLoader() = default;
-    virtual ResourceHandleData& VLoad(char* raw_buffer, std::size_t t_rSize,
-                                     char* buffer) = 0;
-    virtual std::size_t VGetSize(const char* raw_buffer,
-                                 std::size_t t_rSize) const = 0;
-    virtual std::initializer_list<const char*> VGetExtensions() = 0;
+    //virtual ResourceHandleData& VLoad(char* raw_buffer, std::size_t p_rSize,
+    //                                 char* buffer) = 0;
+    //virtual std::size_t VGetSize(const char* raw_buffer,
+    //                             std::size_t p_rSize) const = 0;
+    //virtual std::initializer_list<const char*> VGetExtensions() = 0;
 };
 
 class IFileSystem
 {
 public:
     virtual ~IFileSystem() = default;
-    virtual bool VExists(const Resource& t_resource) const = 0;
-    virtual bool VGetSize(const Resource& t_resource) = 0;
+    virtual bool VExists(const Resource& p_resource) const = 0;
+    virtual std::size_t VGetSize(const Resource& p_resource) = 0;
     //Load raw data into memory.
-    virtual void VLoadIntoMemory(const Resource& t_resource, char* buffer) = 0;
+    virtual void VLoadIntoMemory(const Resource& p_resource, char* buffer) = 0;
 };
 
 class ResourceManager
 {
     LRUCache<Resource, ResourceHandlePtr> m_cache;
-    std::vector<IFileSystem> m_filesystems;
+    std::vector<IFileSystem*> m_filesystems;
 
 public:
-    ResourceManager(unsigned int sizeMB);
-
     //Return pointer to loaded into memory file
     //memory is null terminated
-    std::unique_ptr<char[]> loadToMemory(const Resource& t_resource,
-                                        std::size_t* t_size,
-                                        IFileSystem* t_custom = nullptr);
+    std::unique_ptr<char[]> loadToMemory(const Resource& resource,
+                                         bool null_terminate = false,
+                                         std::size_t* size = nullptr,
+                                         IFileSystem* custom = nullptr);
+
+    inline void addFilesystem(IFileSystem& p_fs)
+    {
+        m_filesystems.push_back(&p_fs);
+    }
 
     //Return handle if already been loaded
     //else return null
-    ResourceHandlePtr getHandle(const Resource& t_resource);
-    ResourceHandlePtr newHandle(const Resource& t_resource,
+    ResourceHandlePtr getHandle(const Resource& p_resource);
+    ResourceHandlePtr newHandle(const Resource& p_resource,
                                 const std::unique_ptr<ResourceHandleData> data);
 };
 }
