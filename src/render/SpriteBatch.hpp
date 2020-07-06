@@ -22,7 +22,7 @@ class SpriteBatch
     unsigned m_numRendered;
 
     const RenderManager& m_rManager;
-    ResourceHandlePtr m_shader;
+    ShaderProgramRHPtr m_shader;
     glm::mat4 m_projection;
     static constexpr float m_quadData[] { -1.f, 1.f,
             1.f, 1.f,
@@ -32,9 +32,10 @@ class SpriteBatch
             -1.f, -1.f};
 public:
     SpriteBatch(const RenderManager& rManager, glm::mat4 projection = glm::mat4(1.f),
-                ResourceHandlePtr shader = nullptr);
+                ShaderProgramRHPtr shader = nullptr);
     //TODO Texture
     void begin(const glm::mat4& view);
+    //FIXME Naive drawing
     void drawOne(const glm::mat4& world, const glm::mat4& view,
                  const glm::vec4& color);
     void end();

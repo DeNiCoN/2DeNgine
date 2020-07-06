@@ -57,27 +57,4 @@ std::unique_ptr<char[]> ResourceManager::loadToMemory(const Resource& t_resource
     filesystem->VLoadIntoMemory(t_resource, raw_buffer.get());
     return raw_buffer;
 }
-
-ResourceHandlePtr ResourceManager::getHandle(const Resource &t_resource)
-{
-    auto it = m_cache.find(t_resource);
-    if (it != m_cache.end())
-    {
-        return it->second;
-    }
-    else
-    {
-        return ResourceHandlePtr(nullptr);
-    }
-}
-
-ResourceHandlePtr ResourceManager::newHandle(const Resource& t_resource,
-                                std::unique_ptr<ResourceHandleData> t_data)
-{
-    ResourceHandlePtr handle =
-        std::make_shared<ResourceHandle>(ResourceHandle::_private_(),
-                                         t_resource, std::move(t_data));
-    m_cache.insert(t_resource, handle);
-    return handle;
-}
 }

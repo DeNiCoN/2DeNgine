@@ -1,4 +1,5 @@
 #include "utils/LRUCache.hpp"
+#include <stdexcept>
 #include <algorithm>
 #include <gtest/gtest.h>
 #include <string>
@@ -64,6 +65,18 @@ TEST_F(LRUCacheTest, Add)
     EXPECT_EQ(empty.begin()->first, 1);
     EXPECT_EQ(empty.begin()->second, 1);
     EXPECT_EQ(empty.size(), initial_size + 3);
+}
+
+TEST_F(LRUCacheTest, Count)
+{
+    ASSERT_TRUE(i1.count("a"));
+    ASSERT_FALSE(i1.count("b"));
+}
+
+TEST_F(LRUCacheTest, At)
+{
+    ASSERT_EQ(i1.at("a"), "_a"s);
+    EXPECT_THROW(i1.at("b"), std::out_of_range);
 }
 
 TEST_F(LRUCacheTest, Find)

@@ -14,7 +14,7 @@ class LRUCache
 
 public:
 
-    typename List::const_iterator find(const K& key)
+    typename List::const_iterator find(const K& key) const
     {
         auto value = m_hashmap.find(key);
         if (value != m_hashmap.end())
@@ -26,6 +26,30 @@ public:
         {
             return m_LRUList.end();
         }
+    }
+
+    typename List::iterator find(const K& key)
+    {
+        auto value = m_hashmap.find(key);
+        if (value != m_hashmap.end())
+        {
+            m_LRUList.splice(m_LRUList.begin(), m_LRUList, value->second);
+            return value->second;
+        }
+        else
+        {
+            return m_LRUList.end();
+        }
+    }
+
+    const V& at(const K& key) const
+    {
+        return m_hashmap.at(key)->second;
+    }
+
+    V& at(const K& key)
+    {
+        return m_hashmap.at(key)->second;
     }
 
     void insert(const K& key, const V& value)
@@ -43,24 +67,29 @@ public:
         m_LRUList.pop_back();
     }
 
-    typename List::const_iterator end()
+    typename List::const_iterator end() const
     {
         return m_LRUList.end();
     }
 
-    typename List::const_iterator begin()
+    typename List::const_iterator begin() const
     {
         return m_LRUList.begin();
     }
 
-    bool empty()
+    bool empty() const
     {
         return begin() == end();
     }
 
-    std::size_t size()
+    std::size_t size() const
     {
         return m_hashmap.size();
+    }
+
+    std::size_t count(const K& key) const
+    {
+        return m_hashmap.count(key);
     }
 
     std::pair<K, V> &back() {

@@ -7,7 +7,7 @@ unsigned SpriteBatch::s_vbo = 0;
 bool SpriteBatch::s_initialized = false;
 
 SpriteBatch::SpriteBatch(const RenderManager& rManager, glm::mat4 projection,
-                         ResourceHandlePtr shader)
+                         ShaderProgramRHPtr shader)
         : m_rManager(rManager), m_projection(projection), m_shader(shader)
 {
     if(!s_initialized)
@@ -79,18 +79,16 @@ void SpriteBatch::init()
 void SpriteBatch::drawOne(const glm::mat4& p_world, const glm::mat4& p_view,
                           const glm::vec4& p_color)
 {
-    const ShaderProgramResourceData* shaderData =
-        static_cast<const ShaderProgramResourceData*>(m_shader->data.get());
     glBindBuffer(GL_ARRAY_BUFFER, m_transformBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float)*16, glm::value_ptr(p_world), GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_colorBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float)*4, glm::value_ptr(p_color), GL_DYNAMIC_DRAW);
 
-    glUseProgram(shaderData->shader);
+    glUseProgram(m_shader->shader);
     glm::mat4 projView = m_projection * p_view;
     glUniformMatrix4fv(
-        glGetUniformLocation(shaderData->shader, "projectionView"),
+        glGetUniformLocation(m_shader->shader, "projectionView"),
         1, GL_FALSE, (GLfloat*)glm::value_ptr(projView));
 
     glBindVertexArray(m_vao);

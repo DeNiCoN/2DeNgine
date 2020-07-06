@@ -8,30 +8,7 @@
 
 namespace DeNgine {
 
-class ResourceHandle;
-class ResourceManager;
-
 using Resource = utils::HashedString;
-using ResourceHandlePtr = std::shared_ptr<ResourceHandle>;
-
-class ResourceHandleData
-{
-public:
-    virtual ~ResourceHandleData() = default;
-};
-
-class ResourceHandle
-{
-    friend class ResourceManager;
-private:
-    struct _private_ { explicit _private_() = default; };
-public:
-    ResourceHandle(_private_, const Resource& p_res,
-                   std::unique_ptr<ResourceHandleData> p_data)
-        :data(std::move(p_data)), resource(p_res) {}
-    const std::unique_ptr<const ResourceHandleData> data;
-    const Resource resource;
-};
 
 class IResourceLoader
 {
@@ -56,7 +33,6 @@ public:
 
 class ResourceManager
 {
-    LRUCache<Resource, ResourceHandlePtr> m_cache;
     std::vector<IFileSystem*> m_filesystems;
 
 public:
@@ -74,8 +50,5 @@ public:
 
     //Return handle if already been loaded
     //else return null
-    ResourceHandlePtr getHandle(const Resource& p_resource);
-    ResourceHandlePtr newHandle(const Resource& p_resource,
-                                const std::unique_ptr<ResourceHandleData> data);
 };
 }
