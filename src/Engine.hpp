@@ -56,9 +56,9 @@ public:
             m_delta = m_currentTime - m_lastTime;
             m_lastTime = m_currentTime;
             m_delay += m_delta;
-            while (m_delay >= 1)
+            while (m_delay >= 0.16)
             {
-                m_delay -= 1;
+                m_delay -= 0.16;
                 //TODO update
                 for(auto scene : scenes)
                 {
@@ -66,7 +66,7 @@ public:
                 }
             }
             //TODO render
-            m_renderManager.render(m_delay / 1.0);
+            m_renderManager.render(m_delay / 0.16);
 
             m_windowManager.poolEvents();
         }

@@ -7,6 +7,13 @@
 namespace DeNgine
 {
 
+struct Sprite
+{
+    glm::mat4 world;
+    glm::vec4 color;
+    //TODO texture
+};
+
 class SpriteBatch
 {
     static void init();
@@ -36,8 +43,10 @@ public:
     //TODO Texture
     void begin(const glm::mat4& view);
     //FIXME Naive drawing
-    void drawOne(const glm::mat4& world, const glm::mat4& view,
-                 const glm::vec4& color);
+    void drawOne(const glm::mat4& view, const Sprite& sprite);
+    void drawOne(const glm::mat4& projection,
+                 const glm::mat4& view, const Sprite& sprite);
+    glm::mat4& projection() { return m_projection; }
     void end();
 
 };

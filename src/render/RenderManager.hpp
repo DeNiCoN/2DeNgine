@@ -3,8 +3,8 @@
 #include <glm/mat3x3.hpp>
 #include <glad/glad.h>
 #include "render/WindowManager.hpp"
-#include "render/SpriteComponent.hpp"
 #include "resource/ShaderResourceLoader.hpp"
+#include "gamebasis/Scene.hpp"
 
 namespace DeNgine
 {

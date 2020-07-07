@@ -6,20 +6,22 @@ namespace DeNgine
 class ActorFactory
 {
     ActorFactory() = default;
-    static ActorFactory* instance;
+    ActorFactory(ActorFactory&) = delete;
+    void operator=(const ActorFactory&) = delete;
 
     Actor m_next;
+
+public:
     Actor getNext()
     {
         return m_next++;
     }
 
-public:
-
     Actor loadFromXML(const Scene& scene, const tinyxml2::XMLElement* root);
-    static ActorFactory* getInstance()
+    static ActorFactory& getInstance()
     {
-        return instance ? instance : instance = new ActorFactory();
+        static ActorFactory instance;
+        return instance;
     }
 };
 

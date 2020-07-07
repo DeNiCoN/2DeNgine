@@ -21,6 +21,7 @@ add_library(2DeNgine STATIC
   "src/render/WindowManager.cpp"
   "src/render/RenderManager.cpp"
   "src/render/SpriteBatch.cpp"
+  "src/render/SpriteComponent.cpp"
   )
 
 target_include_directories(2DeNgine

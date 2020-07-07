@@ -14,7 +14,7 @@ struct Transform
     glm::vec3 position;
     glm::vec2 velocity;
     float angle;
-    bool dirty;
+    bool dirty = true;
 };
 
 using TransformMap = std::unordered_map<Actor, Transform>;
@@ -31,15 +31,19 @@ public:
 
     void VOnAddedTo(Scene& p_scene) override
     {
-        p_scene.addToPostUpdate([]()
+        p_scene.addToPostUpdate([&]()
         {
             //TODO dirty bit
+            for (auto& [actor, transform] : m_transforms)
+            {
+                transform.dirty = false;
+            }
         });
     }
 
-    inline const Transform& add(Actor p_actor)
+    inline void add(Actor p_actor)
     {
-        return (*m_transforms.insert(std::pair(p_actor, Transform())).first).second;
+        m_transforms[p_actor];
     }
 
     inline bool contains(Actor p_actor)
@@ -67,6 +71,9 @@ public:
         t.angle = p_angle;
         t.dirty = true;
     }
+
+    inline const Transform& get(Actor p_actor) const
+    { return m_transforms.at(p_actor); }
 
     inline void change(Actor p_actor, glm::vec3 p_position,
                        glm::vec2 p_vel, float p_angle)

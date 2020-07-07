@@ -36,9 +36,9 @@ public:
     ShaderRH(_private_, const Resource& p_res,
                                 unsigned p_shader, unsigned p_type)
         : shader(p_shader), type(p_type), resource(p_res) {}
-    const Resource resource;
     const unsigned int shader;
     const unsigned int type;
+    const Resource resource;
     ~ShaderRH()
     {
         if (shader)

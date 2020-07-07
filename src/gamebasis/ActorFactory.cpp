@@ -9,7 +9,7 @@ Actor ActorFactory::loadFromXML(const Scene &scene,
                                 const tinyxml2::XMLElement *root)
 {
     Actor a = getNext();
-    auto CMmap = scene.getComponentManagersMap();
+    auto& CMmap = scene.getComponentManagersMap();
     for (const tinyxml2::XMLElement* node = root->FirstChildElement();
          node; node = node->NextSiblingElement())
     {

@@ -76,17 +76,24 @@ void SpriteBatch::init()
         1, GL_FALSE, (GLfloat*)glm::value_ptr(projView));
 }*/
 
-void SpriteBatch::drawOne(const glm::mat4& p_world, const glm::mat4& p_view,
-                          const glm::vec4& p_color)
+void SpriteBatch::drawOne(const glm::mat4& p_view, const Sprite& p_sprite)
+{
+    drawOne(m_projection, p_view, p_sprite);
+}
+
+void SpriteBatch::drawOne(const glm::mat4& p_proj,
+                          const glm::mat4& p_view, const Sprite& p_sprite)
 {
     glBindBuffer(GL_ARRAY_BUFFER, m_transformBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*16, glm::value_ptr(p_world), GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*16,
+                 glm::value_ptr(p_sprite.world), GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_colorBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*4, glm::value_ptr(p_color), GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*4,
+                 glm::value_ptr(p_sprite.color), GL_DYNAMIC_DRAW);
 
     glUseProgram(m_shader->shader);
-    glm::mat4 projView = m_projection * p_view;
+    glm::mat4 projView = p_proj * p_view;
     glUniformMatrix4fv(
         glGetUniformLocation(m_shader->shader, "projectionView"),
         1, GL_FALSE, (GLfloat*)glm::value_ptr(projView));
