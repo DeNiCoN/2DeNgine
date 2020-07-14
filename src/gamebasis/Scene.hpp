@@ -1,6 +1,7 @@
 #pragma once
 #include <cassert>
 #include <functional>
+#include <memory>
 #include <unordered_map>
 #include <glm/mat4x4.hpp>
 #include "utils/HashedString.hpp"
@@ -78,4 +79,6 @@ public:
         t_comp.VOnAddedTo(*this);
     }
 };
+
+using ScenePtr = std::shared_ptr<Scene>;
 }

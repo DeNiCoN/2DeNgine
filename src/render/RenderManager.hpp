@@ -15,12 +15,12 @@ private:
 
     ShaderResourceLoader m_shaderLoader;
     WindowManager& m_wManager;
-    std::vector<Scene>& m_scenes;
+    std::vector<ScenePtr>& m_scenes;
 public:
     bool initialize();
     void terminate();
 
-    RenderManager(WindowManager& p_window, std::vector<Scene>& p_scenes,
+    RenderManager(WindowManager& p_window, std::vector<ScenePtr>& p_scenes,
                   ResourceManager& m_resourceManager) :
         m_shaderLoader(m_resourceManager),
         m_wManager(p_window),
@@ -31,12 +31,12 @@ public:
 
     inline void render(double fromUpdate)
     {
-        //TODO normal per scene framebuffer rendering
+        //TODO framebuffer rendering
         glClearColor(0.1, 0.1, 0.5, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
 
         for(auto scene : m_scenes)
-            scene.render(fromUpdate);
+            scene->render(fromUpdate);
 
         m_wManager.swapBuffers();
     }
