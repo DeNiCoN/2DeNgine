@@ -2,6 +2,7 @@
 
 #include "resource/ResourceManager.hpp"
 #include "tinyxml2.h"
+#include <easylogging++.h>
 #include <iostream>
 
 namespace DeNgine
@@ -18,7 +19,8 @@ class XMLResourceData : public ResourceHandleData
     {
         m_document.Parse(pRawBuffer);
         if (m_document.Error()) {
-            std::cout << m_document.ErrorStr() << "\n";
+            LOG(ERROR) << "Failed to load XML file: "
+                << m_document.ErrorStr() << "\n";
             return false;
         }
         return true;

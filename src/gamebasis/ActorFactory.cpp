@@ -1,4 +1,5 @@
 #include "gamebasis/ActorFactory.hpp"
+#include <easylogging++.h>
 #include <tinyxml2.h>
 #include <iostream>
 
@@ -21,14 +22,15 @@ Actor ActorFactory::loadFromXML(const Scene &scene,
         {
             if(!c->second.VLoadComponent(a, e))
             {
-                std::cout << "Failed to load component " <<
-                    c->second.VName().str << "\n";
+
+                LOG(ERROR) << "Failed to load component " <<
+                    c->second.VName().str;
                 return 0;
             }
         }
         else
         {
-            std::cout << "No component " << e->Value() << " in scene\n";
+            LOG(ERROR) << e->Value() << " not found while loading scene";
             return 0;
         }
     }
