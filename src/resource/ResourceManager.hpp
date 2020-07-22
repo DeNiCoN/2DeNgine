@@ -41,7 +41,7 @@ public:
     std::unique_ptr<char[]> loadToMemory(const Resource& resource,
                                          bool null_terminate = false,
                                          std::size_t* size = nullptr,
-                                         IFileSystem* custom = nullptr);
+                                         IFileSystem* custom = nullptr) const;
 
     inline void addFilesystem(IFileSystem& p_fs)
     {

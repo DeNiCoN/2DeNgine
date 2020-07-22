@@ -7,9 +7,10 @@
 namespace DeNgine
 {
 
-std::unique_ptr<char[]> ResourceManager::loadToMemory(const Resource& t_resource,
-                                                      bool p_nullTerm,
-                                    std::size_t* t_size, IFileSystem* t_custom)
+std::unique_ptr<char[]> ResourceManager::loadToMemory(
+    const Resource& t_resource,
+    bool p_nullTerm,
+    std::size_t* t_size, IFileSystem* t_custom) const
 {
     //Load into memory and pass it to loader
     //Find file system or use custom

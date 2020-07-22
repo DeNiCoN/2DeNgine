@@ -10,50 +10,47 @@ namespace DeNgine
 
 class XMLResourceLoader;
 
-class XMLResourceData : public ResourceHandleData
+class XMLResourceHandle
 {
     friend class XMLResourceLoader;
     tinyxml2::XMLDocument m_document;
 
-    bool parseXml(char* pRawBuffer)
+public:
+    const tinyxml2::XMLDocument& document() const { return m_document; }
+
+    XMLResourceHandle(char* p_source)
     {
-        m_document.Parse(pRawBuffer);
-        if (m_document.Error()) {
-            LOG(ERROR) << "Failed to load XML file: "
-                << m_document.ErrorStr() << "\n";
-            return false;
-        }
-        return true;
+        m_document.Parse(p_source);
     }
 };
 
+using XMLResourceHandlePtr = std::shared_ptr<XMLResourceHandle>;
+
 class XMLResourceLoader
 {
-    XMLResourceLoader() = default;
-    static XMLResourceLoader* instance;
+    mutable LRUCache<Resource, XMLResourceHandlePtr> m_documentCache;
+    const ResourceManager& m_resManager;
 public:
-    static XMLResourceLoader* getInstance()
-    {
-        return instance ? instance : instance = new XMLResourceLoader();
-    }
 
-    ResourceHandlePtr load(ResourceManager& t_m, Resource& t_res,
-                           IFileSystem* t_f = nullptr)
+    XMLResourceLoader(const ResourceManager& p_resManager)
+        : m_resManager(p_resManager) {}
+
+    XMLResourceHandlePtr load(Resource& p_res)
     {
-        if (auto handle = t_m.getHandle(t_res))
+        if (m_documentCache.count(p_res))
         {
-            return handle;
+            return m_documentCache.at(p_res);
         }
         else
         {
-            auto memory = t_m.loadToMemory(t_res, nullptr, t_f);
-            auto data = new XMLResourceData();
-            if (!data->parseXml(memory.get()))
-            {
-                delete data;
+            auto memory = m_resManager.loadToMemory(p_res, true);
+            auto handle = std::make_shared<XMLResourceHandle>(memory.get());
+            if (handle->document().Error()) {
+                LOG(ERROR) << "Failed to load XML file: "
+                           << handle->document().ErrorStr();
                 return nullptr;
             }
-            return t_m.newHandle(t_res, std::unique_ptr<ResourceHandleData>(data));
+            return handle;
         }
 
     }

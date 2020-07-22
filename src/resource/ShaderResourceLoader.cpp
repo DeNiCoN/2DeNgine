@@ -6,7 +6,7 @@ namespace DeNgine
 {
 
 ShaderProgramRHPtr ShaderResourceLoader::load(const Resource& p_vertex,
-                                             const Resource& p_fragment) const
+                                              const Resource& p_fragment) const
 {
     //Concatenate shader names to unique identify shader
     //TODO performance
