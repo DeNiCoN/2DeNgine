@@ -38,14 +38,13 @@ ShaderProgramRHPtr ShaderResourceLoader::load(const Resource& p_vertex,
             return nullptr;
         }
 
-        //TODO load from renderManager. Doing direct opengl call for now
         //Create and link shader
-        int program = glCreateProgram();
-        glAttachShader(program, vertex->shader);
-        glAttachShader(program, fragment->shader);
-        glLinkProgram(program);
+        //FIXME Dynamic allocation
+        auto handle = std::make_shared<ShaderProgramRH>
+            (concat, *vertex.get(), *fragment.get());
+
         int success;
-        glGetProgramiv(program, GL_LINK_STATUS, &success);
+        glGetProgramiv(handle->shader, GL_LINK_STATUS, &success);
         if (!success)
         {
             static char message[512];
@@ -53,11 +52,7 @@ ShaderProgramRHPtr ShaderResourceLoader::load(const Resource& p_vertex,
             LOG(ERROR) << "Failed to link shader program: " << message;
             return nullptr;
         }
-        //Create ShaderProgramResourceData
-        //And insert it into cache
-        //FIXME Dynamic allocation
-        auto handle = std::make_shared<ShaderProgramRH>
-            (ShaderProgramRH::_private_(), concat, program);
+        //Insert it into cache
         m_programCache.insert(concat, handle);
         return handle;
     }
@@ -79,25 +74,24 @@ ShaderRHPtr ShaderResourceLoader::loadShader(const Resource& p_shader,
         if (!mem)
             return nullptr;
 
-        //Compile shader
-        //TODO load from renderManager. Doing direct opengl call for now
         char* mem2 = mem.get();
-        unsigned shader = glCreateShader(p_type);
-        glShaderSource(shader, 1, &mem2, NULL);
-        glCompileShader(shader);
+
+        //Compile shader
+        //FIXME Dynamic allocation
+        auto handle = std::make_shared<ShaderRH>
+            (p_shader, mem2, p_type);
+
+        //Check for errors
         int success;
-        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+        glGetShaderiv(handle->shader, GL_COMPILE_STATUS, &success);
         if(!success)
         {
             static char message[512];
-            glGetShaderInfoLog(shader, 512, NULL, message);
+            glGetShaderInfoLog(handle->shader, 512, NULL, message);
             LOG(ERROR) << "Failed to compile shader: " << message;
             return nullptr;
         };
-        //Create ShaderResourceData
-        //FIXME Dynamic allocation
-        auto handle = std::make_shared<ShaderRH>
-            (ShaderRH::_private_(), p_shader, shader, p_type);
+
         m_shaderCache.insert(p_shader, handle);
         return handle;
     }

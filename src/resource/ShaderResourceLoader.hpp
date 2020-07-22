@@ -8,37 +8,20 @@ namespace DeNgine
 class ShaderResourceLoader;
 
 
-class ShaderProgramRH
-{
-    friend class ShaderResourceLoader;
-    struct _private_ { explicit _private_() = default; };
-public:
-    ShaderProgramRH(_private_, const Resource& p_res,
-                                unsigned p_shader)
-        : shader(p_shader), resource(p_res) {}
-    unsigned int shader;
-    const Resource resource;
-    ~ShaderProgramRH()
-    {
-        if (shader)
-        {
-            glDeleteProgram(shader);
-        }
-    }
-};
-using ShaderProgramRHPtr = std::shared_ptr<ShaderProgramRH>;
 
 class ShaderRH
 {
-    friend class ShaderResourceLoader;
-    struct _private_ { explicit _private_() = default; };
 public:
-    ShaderRH(_private_, const Resource& p_res,
-                                unsigned p_shader, unsigned p_type)
-        : shader(p_shader), type(p_type), resource(p_res) {}
+    ShaderRH(const Resource& p_res, char* p_source, unsigned p_type)
+        : shader(glCreateProgram()), type(p_type), resource(p_res)
+    {
+        glShaderSource(shader, 1, &p_source, NULL);
+        glCompileShader(shader);
+    }
     const unsigned int shader;
     const unsigned int type;
     const Resource resource;
+
     ~ShaderRH()
     {
         if (shader)
@@ -47,6 +30,29 @@ public:
         }
     }
 };
+
+class ShaderProgramRH
+{
+public:
+    ShaderProgramRH(const Resource& p_res, ShaderRH& vertex, ShaderRH& fragment)
+        : resource(p_res), shader(glCreateProgram())
+    {
+        glAttachShader(shader, vertex.shader);
+        glAttachShader(shader, fragment.shader);
+        glLinkProgram(shader);
+    }
+    const Resource resource;
+    const unsigned int shader;
+    ~ShaderProgramRH()
+    {
+        if (shader)
+        {
+            glDeleteProgram(shader);
+        }
+    }
+};
+
+using ShaderProgramRHPtr = std::shared_ptr<ShaderProgramRH>;
 using ShaderRHPtr = std::shared_ptr<ShaderRH>;
 
 //Inheritance just for future ability to preload resources
