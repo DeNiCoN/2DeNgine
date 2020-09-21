@@ -8,6 +8,11 @@ namespace DeNgine
 {
 bool WindowManager::s_initialized = false;
 
+void glfwOnResize(GLFWwindow*, unsigned p_width, unsigned p_height)
+{
+   WindowManager::getInstance().m_onResize(p_width, p_height);
+}
+
 bool WindowManager::initialize()
 {
    assert(!s_initialized && "Glfw already initialized");

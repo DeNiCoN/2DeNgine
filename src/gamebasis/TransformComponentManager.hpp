@@ -26,9 +26,8 @@ public:
     const utils::HashedString VName() const override
     { return "TransformCM"; }
 
-    bool VLoadComponent(Actor, const tinyxml2::XMLElement*) override
-    { return true; }
-
+    bool VLoadComponent(Actor p_actor, const tinyxml2::XMLElement* p_root) override;
+   
     void VOnAddedTo(Scene& p_scene) override
     {
         p_scene.addToPostUpdate([&]()
@@ -41,17 +40,17 @@ public:
         });
     }
 
-    inline void add(Actor p_actor)
+    void add(Actor p_actor, const Transform& p_initial = {})
     {
-        m_transforms[p_actor];
+        m_transforms[p_actor] = p_initial;
     }
 
-    inline bool contains(Actor p_actor)
+    bool contains(Actor p_actor)
     {
         return m_transforms.count(p_actor);
     }
 
-    inline void changeVelocity(Actor p_actor, glm::vec2 p_vel)
+    void changeVelocity(Actor p_actor, glm::vec2 p_vel)
     {
         auto& t = m_transforms.at(p_actor);
         t.velocity = p_vel;

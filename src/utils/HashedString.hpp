@@ -1,5 +1,4 @@
-#ifndef __HASHEDSTRING_H_
-#define __HASHEDSTRING_H_
+#pragma once
 #include "utils/hash.h"
 
 namespace DeNgine {
@@ -7,12 +6,15 @@ namespace utils {
 
 struct HashedString
 {
-    const char* str;
     const std::uint32_t length;
     const std::uint32_t hashed;
-    constexpr HashedString(const char* c_str)
-        :str(c_str), length(std::char_traits<char>::length(c_str)),
-         hashed(hash(c_str, length))
+    constexpr HashedString(std::string_view p_str)
+        :length(p_str.length()),
+         hashed(hash(p_str.data(), length))
+    {}
+    constexpr HashedString(const char* p_str)
+        :length(std::char_traits<char>::length(p_str)),
+         hashed(hash(p_str, length))
     {}
 };
 
@@ -35,7 +37,7 @@ template<>
 class hash<DeNgine::utils::HashedString>
 {
 public:
-    constexpr std::size_t operator()(const DeNgine::utils::HashedString &s) const { return s.hashed; }
+    constexpr std::size_t operator()(const DeNgine::utils::HashedString &s) const
+    { return s.hashed; }
 };
 } // namespace ::std
-#endif

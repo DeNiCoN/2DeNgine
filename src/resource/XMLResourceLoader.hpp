@@ -35,7 +35,7 @@ public:
     XMLResourceLoader(const ResourceManager& p_resManager)
         : m_resManager(p_resManager) {}
 
-    XMLResourceHandlePtr load(Resource& p_res)
+    XMLResourceHandlePtr load(const Resource& p_res)
     {
         if (m_documentCache.count(p_res))
         {
@@ -44,6 +44,8 @@ public:
         else
         {
             auto memory = m_resManager.loadToMemory(p_res, true);
+            if (!memory)
+                return nullptr;
             auto handle = std::make_shared<XMLResourceHandle>(memory.get());
             if (handle->document().Error()) {
                 LOG(ERROR) << "Failed to load XML file: "

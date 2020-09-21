@@ -2,6 +2,8 @@
 #include "resource/ShaderResourceLoader.hpp"
 #include "gamebasis/TransformComponentManager.hpp"
 #include <glm/gtc/matrix_transform.hpp>
+#include "utils/XMLUtils.hpp"
+#include <tinyxml2.h>
 
 namespace DeNgine
 {
@@ -48,5 +50,17 @@ void SpriteCM::VOnAddedTo(Scene& p_scene)
             m_batch.drawOne(p_scene.projection(), p_scene.view(), sprite);
         }
     });
+}
+
+bool SpriteCM::VLoadComponent(Actor p_actor, const tinyxml2::XMLElement *p_root)
+{
+    auto colorElem = p_root->FirstChildElement("Color");
+    if (colorElem)
+    {
+        add(p_actor, utils::asVec4(colorElem));
+        return true;
+    }
+    add(p_actor);
+    return true;
 }
 }

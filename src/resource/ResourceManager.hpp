@@ -31,9 +31,11 @@ public:
     virtual void VLoadIntoMemory(const Resource& p_resource, char* buffer) = 0;
 };
 
+using IFileSystemPtr = std::shared_ptr<IFileSystem>;
+
 class ResourceManager
 {
-    std::vector<IFileSystem*> m_filesystems;
+    std::vector<IFileSystemPtr> m_filesystems;
 
 public:
     //Return pointer to loaded into memory file
@@ -43,9 +45,9 @@ public:
                                          std::size_t* size = nullptr,
                                          IFileSystem* custom = nullptr) const;
 
-    inline void addFilesystem(IFileSystem& p_fs)
+    inline void addFilesystem(IFileSystemPtr p_fs)
     {
-        m_filesystems.push_back(&p_fs);
+        m_filesystems.push_back(p_fs);
     }
 
     //Return handle if already been loaded

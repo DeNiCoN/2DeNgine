@@ -29,8 +29,8 @@ class SpriteBatch
     unsigned m_numRendered;
 
     const RenderManager& m_rManager;
-    ShaderProgramRHPtr m_shader;
     glm::mat4 m_projection;
+    ShaderProgramRHPtr m_shader;
     static constexpr float m_quadData[] { -1.f, 1.f,
             1.f, 1.f,
             1.f, -1.f,

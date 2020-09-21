@@ -41,7 +41,7 @@ std::unique_ptr<char[]> ResourceManager::loadToMemory(
                 " not found";
             return nullptr;
         }
-        filesystem = *filesystem_it;
+        filesystem = filesystem_it->get();
     }
     //Load resource from memory
     //

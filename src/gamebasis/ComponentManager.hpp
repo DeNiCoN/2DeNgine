@@ -1,4 +1,7 @@
 #pragma once
+#include <memory>
+#include <vector>
+
 namespace tinyxml2 {
 class XMLElement;
 }
@@ -21,5 +24,9 @@ public:
     virtual ~IComponentManager() = default;
     virtual bool VLoadComponent(Actor, const tinyxml2::XMLElement*) = 0;
     virtual void VOnAddedTo(Scene&) = 0;
+    virtual void VInit(Scene&) {};
+    virtual std::vector<utils::HashedString> requireList() { return {}; }
 };
+
+using IComponentManagerPtr = std::shared_ptr<IComponentManager>;
 }

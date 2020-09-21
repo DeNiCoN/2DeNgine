@@ -1,4 +1,5 @@
 #pragma once
+#include "ComponentManagerFactory.hpp"
 #include "gamebasis/Scene.hpp"
 
 namespace DeNgine
@@ -7,7 +8,8 @@ class ActorFactory
 {
     Actor m_next;
 public:
-    ActorFactory() = default;
+    ActorFactory()
+    {}
     ActorFactory(ActorFactory&) = delete;
     void operator=(const ActorFactory&) = delete;
     Actor getNext()
@@ -15,7 +17,7 @@ public:
         return m_next++;
     }
 
-    Actor loadFromXML(const Scene& scene, const tinyxml2::XMLElement* root);
+    Actor loadFromXML(Scene& scene, const tinyxml2::XMLElement* root);
 };
 
 }

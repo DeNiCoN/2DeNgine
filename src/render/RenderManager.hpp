@@ -11,25 +11,19 @@ namespace DeNgine
 
 class RenderManager
 {
-private:
-
     ShaderResourceLoader m_shaderLoader;
     WindowManager& m_wManager;
     std::vector<ScenePtr>& m_scenes;
+    ViewportType m_viewportType;
 public:
     bool initialize();
     void terminate();
 
-    RenderManager(WindowManager& p_window, std::vector<ScenePtr>& p_scenes,
-                  ResourceManager& m_resourceManager) :
-        m_shaderLoader(m_resourceManager),
-        m_wManager(p_window),
-        m_scenes(p_scenes)
-    {}
+    RenderManager(WindowManager&, std::vector<ScenePtr>&, ResourceManager&);
 
     const ShaderResourceLoader& getShaderLoader() const {return m_shaderLoader; }
 
-    inline void render(double fromUpdate)
+    void render(double fromUpdate)
     {
         //TODO framebuffer rendering
         glClearColor(0.1, 0.1, 0.5, 1.0);

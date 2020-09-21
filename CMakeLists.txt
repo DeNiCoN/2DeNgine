@@ -18,6 +18,7 @@ add_library(2DeNgine STATIC
   "src/resource/ShaderResourceLoader.cpp"
   "src/Engine.cpp"
   "src/gamebasis/ActorFactory.cpp"
+  "src/gamebasis/SceneFactory.cpp"
   "src/render/WindowManager.cpp"
   "src/render/RenderManager.cpp"
   "src/render/SpriteBatch.cpp"
